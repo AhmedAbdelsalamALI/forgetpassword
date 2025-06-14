@@ -1,0 +1,601 @@
+/* أساسيات التصميم */
+:root {
+    --primary-color: #2c7873;
+    --secondary-color: #6fb98f;
+    --accent-color: #ff9a3c;
+    --light-color: #f5f5f5;
+    --dark-color: #333;
+    --danger-color: #e74c3c;
+    --success-color: #2ecc71;
+    --warning-color: #f39c12;
+    --font-primary: 'Tajawal', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: #f9f9f9;
+    color: var(--dark-color);
+    line-height: 1.6;
+}
+
+.app-container {
+    max-width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+/* شريط التقدم */
+.progress-bar {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.stats-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.stat-box {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 1rem;
+    min-width: 120px;
+    backdrop-filter: blur(5px);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* المحتوى الرئيسي */
+.main-content {
+    flex: 1;
+    padding: 1.5rem;
+    padding-bottom: 100px;
+}
+
+/* شريط التنقل */
+.nav-tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    background-color: white;
+    border-radius: 50px;
+    padding: 0.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    padding: 0.8rem;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    color: var(--dark-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.nav-btn.active {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: 500;
+}
+
+/* محتوى التبويبات */
+.tab-content {
+    display: none;
+    animation: fadeIn 0.5s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* الرسالة التحفيزية */
+.motivational-message {
+    background-color: var(--light-color);
+    border-radius: 15px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    border-left: 5px solid var(--accent-color);
+}
+
+.motivational-message p {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--primary-color);
+}
+
+/* الإنجازات الصحية */
+.health-milestones {
+    background-color: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.health-milestones h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.milestones-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.milestone {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0.8rem;
+    border-radius: 10px;
+    background-color: var(--light-color);
+}
+
+.milestone.achieved {
+    background-color: #e8f5e9;
+    border-left: 4px solid var(--success-color);
+}
+
+.milestone i {
+    font-size: 1.2rem;
+    color: var(--success-color);
+}
+
+.milestone.achieved i {
+    color: var(--success-color);
+}
+
+.milestone:not(.achieved) i {
+    color: var(--warning-color);
+}
+
+/* إدارة الرغبة في التدخين */
+.craving-management {
+    background-color: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.craving-management h2 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.craving-btn {
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    width: 100%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.craving-btn:hover {
+    background-color: #c0392b;
+}
+
+.distraction-tips {
+    background-color: #fff8e1;
+    border-radius: 10px;
+    padding: 1rem;
+    border-left: 4px solid var(--warning-color);
+}
+
+.distraction-tips h3 {
+    color: var(--dark-color);
+    margin-bottom: 0.5rem;
+}
+
+.distraction-tips ul {
+    list-style-position: inside;
+    margin-bottom: 1rem;
+}
+
+.distraction-tips li {
+    margin-bottom: 0.5rem;
+}
+
+.countdown-timer {
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--danger-color);
+}
+
+.countdown-timer span {
+    font-size: 1.5rem;
+}
+
+/* التقدم الصحي */
+.health-stats {
+    background-color: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.health-stats h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.health-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.health-card {
+    background-color: var(--light-color);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+}
+
+.health-progress p {
+    margin-top: 0.5rem;
+    font-weight: 500;
+}
+
+.progress-circle {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    border-radius: 50%;
+    background: conic-gradient(var(--secondary-color) 0%, #eee 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-circle::before {
+    content: '';
+    position: absolute;
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: white;
+}
+
+.progress-circle span {
+    position: relative;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* الخط الزمني */
+.timeline-container h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.timeline {
+    position: relative;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.timeline::after {
+    content: '';
+    position: absolute;
+    width: 2px;
+    background-color: var(--secondary-color);
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    margin-left: -3px;
+}
+
+.timeline-item {
+    padding: 10px 0;
+    padding-left: 30px;
+    position: relative;
+}
+
+.timeline-item::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    left: 4px;
+    background-color: white;
+    border: 3px solid var(--primary-color);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.timeline-date {
+    font-weight: 700;
+    color: var(--primary-color);
+    margin-bottom: 0.3rem;
+}
+
+.timeline-content {
+    background-color: var(--light-color);
+    padding: 0.8rem;
+    border-radius: 5px;
+}
+
+/* نصائح يومية */
+.tips-container {
+    background-color: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.tips-container h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.daily-tip {
+    background-color: #e3f2fd;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid var(--primary-color);
+}
+
+.daily-tip h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.tip-categories {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+.category-card {
+    background-color: var(--light-color);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.category-card i {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.category-card h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.8rem;
+}
+
+.category-card ul {
+    list-style-position: inside;
+}
+
+.category-card li {
+    margin-bottom: 0.3rem;
+}
+
+/* مجتمع الدعم */
+.community-container {
+    background-color: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+.community-container h2 {
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.community-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1.5rem;
+    background-color: var(--light-color);
+    border-radius: 10px;
+    padding: 1rem;
+}
+
+.community-stat {
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--dark-color);
+}
+
+.success-stories h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.story-card {
+    background-color: var(--light-color);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.story-card::before {
+    content: '"';
+    position: absolute;
+    font-size: 3rem;
+    color: rgba(0, 0, 0, 0.1);
+    top: 10px;
+    left: 10px;
+}
+
+.story-card p {
+    font-style: italic;
+    margin-bottom: 0.5rem;
+    padding-left: 1.5rem;
+}
+
+.story-card span {
+    font-size: 0.9rem;
+    color: var(--primary-color);
+    font-weight: 500;
+    display: block;
+    text-align: left;
+    padding-left: 1.5rem;
+}
+
+/* شريط الإدخال */
+.input-section {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
+    padding: 1rem;
+    box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.05);
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.add-cigarette {
+    text-align: center;
+}
+
+.add-cigarette h3 {
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.add-cigarette p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.add-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.add-btn:hover {
+    background-color: #e67e22;
+}
+
+/* الطبقات المساعدة */
+.hidden {
+    display: none;
+}
+
+/* التصميم المتجاوب */
+@media (min-width: 768px) {
+    .app-container {
+        max-width: 500px;
+        margin: 20px auto;
+        min-height: calc(100vh - 40px);
+        border-radius: 20px;
+        overflow: hidden;
+    }
+
+    .input-section {
+        position: static;
+        border-radius: 0;
+        box-shadow: none;
+        border-top: 1px solid #eee;
+    }
+
+    .tip-categories {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

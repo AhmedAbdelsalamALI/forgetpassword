@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الدليل الشامل للإسعافات الأولية</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4a89dc;  
+            --secondary: #3bafda;
+            --light: #f5f7fa;
+            --dark: #333;
+            --warning: #f6bb42;
+            --success: #8cc152;
+            --danger: #e9573f;
+            --text: #434a54;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Tajawal', 'Arial', sans-serif;
+            background-color: var(--light);
+            color: var(--text);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+            position: relative;
+        }
+        
+        .search-container {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            padding: 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+        
+        .search-bar {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #e6e9ed;
+            border-radius: 30px;
+            font-size: 16px;
+            text-align: right;
+            transition: all 0.3s;
+            background-color: #f5f7fa;
+        }
+        
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: white;
+            box-shadow: 0 0 0 3px rgba(74, 137, 220, 0.2);
+        }
+        
+        .emergency-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 20px 0;
+        }
+        
+        .emergency-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border-left: 5px solid var(--primary);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .emergency-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .emergency-card h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .emergency-card p {
+            color: var(--text);
+            opacity: 0.8;
+            font-size: 0.95rem;
+        }
+        
+        .emergency-icon {
+            font-size: 2rem;
+            margin-left: 10px;
+            color: var(--primary);
+            float: right;
+        }
+        
+        /* عرض تفاصيل الحالة في صفحة منفصلة */
+        .emergency-details {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            max-width: 600px;
+            height: 100vh;
+            background-color: white;
+            z-index: 1000;
+            padding: 1.5rem;
+            overflow-y: auto;
+            transition: right 0.4s ease;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        }
+        
+        .emergency-details.active {
+            right: 0;
+        }
+        
+        .details-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .details-header h2 {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+        
+        .steps-container {
+            background-color: #f5f7fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .steps-container h3 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .steps-list {
+            padding-right: 1.5rem;
+        }
+        
+        .steps-list li {
+            margin-bottom: 0.8rem;
+            position: relative;
+        }
+        
+        .warning-box {
+            background-color: #fff3f3;
+            border-right: 4px solid var(--danger);
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+        }
+        
+        .warning-box h3 {
+            color: var(--danger);
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3a7bd5;
+            transform: translateY(-2px);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #2a9ac8;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(74, 137, 220, 0.1);
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+        }
+        
+        .emergency-number {
+            background-color: var(--danger);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: inline-block;
+            margin-top: 1rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        /* Dark Mode */
+        .dark-mode {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .emergency-card,
+        .dark-mode .steps-container,
+        .dark-mode .search-container {
+            background-color: #2d2d2d;
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .emergency-details {
+            background-color: #252525;
+            color: #f0f0f0;
+        }
+        
+        .dark-mode .steps-container {
+            background-color: #333;
+        }
+        
+        .dark-mode .warning-box {
+            background-color: #3a2a2a;
+        }
+        
+        .dark-mode .search-bar {
+            background-color: #333;
+            color: white;
+            border-color: #444;
+        }
+        
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            z-index: 100;
+            background: var(--dark);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .dark-mode-toggle:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .emergency-card {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .emergency-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .emergency-details {
+                max-width: 100%;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+        
+        /* حالة عدم وجود نتائج بحث */
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            grid-column: 1 / -1;
+            color: var(--text);
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-first-aid"></i> الدليل الشامل للإسعافات الأولية</h1>
+        <p>معلومات طبية موثوقة للتعامل مع الحالات الطارئة</p>
+    </header>
+    
+    <div class="container">
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="ابحث عن حالة طارئة...">
+        </div>
+        
+        <div class="emergency-grid" id="emergencyContainer">
+            <!-- سيتم ملؤها بواسطة JavaScript -->
+        </div>
+    </div>
+    
+    <!-- تفاصيل الحالة (ستظهر كصفحة منبثقة من الجانب) -->
+    <div class="emergency-details" id="emergencyDetails">
+        <div class="details-header">
+            <h2 id="detailTitle"></h2>
+            <button class="close-btn" onclick="closeDetails()"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <div id="detailContent"></div>
+        
+        <div class="action-buttons">
+            <button class="btn btn-primary" onclick="printDetails()">
+                <i class="fas fa-print"></i> طباعة الإرشادات
+            </button>
+            <button class="btn btn-secondary" onclick="shareDetails()">
+                <i class="fas fa-share-alt"></i> مشاركة
+            </button>
+            <button class="btn btn-outline" onclick="closeDetails()">
+                <i class="fas fa-arrow-right"></i> العودة للقائمة
+            </button>
+        </div>
+    </div>
+    
+    <footer>
+        <p>هذا الدليل لا يغني عن استشارة الطبيب أو التوجه للمستشفى في الحالات الخطيرة</p>
+        <div class="emergency-number">
+            <i class="fas fa-phone-alt"></i> رقم الطوارئ: 123
+        </div>
+        <p style="margin-top: 1rem;">©  جميع الحقوق محفوظة -   WELLCARE</p>
+    </footer>
+    
+    <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()">
+        <i class="fas fa-moon"></i>
+    </button>
+    
+    <script>
+        // بيانات الحالات الطارئة
+        const emergencies = [
+            {
+                id: 'burns',
+                title: 'الحروق',
+                icon: 'fas fa-fire',
+                description: 'الإسعافات الأولية للحروق بأنواعها (حرارية، كيميائية، كهربائية)',
+                steps: [
+                    'أبعد المصاب عن مصدر الحرق فورًا',
+                    'قم بتبريد الحرق بماء فاتر (ليس باردًا جدًا) لمدة 10-15 دقيقة',
+                    'أزل أي ملابس أو مجوهرات غير ملتصقة بالجلد بلطف',
+                    'غطِ الحرق بضمادة نظيفة غير لاصقة أو قطعة قماش نظيفة',
+                    'لا تفتح البثور إن وجدت',
+                    'في حالة الحروق الكبيرة أو العميقة، اتصل بالإسعاف فورًا'
+                ],
+                warnings: [
+                    'استخدام الثلج مباشرة على الحرق',
+                    'استخدام الزبدة، الزيت أو معجون الأسنان',
+                    'إزالة الملابس الملتصقة بالجلد بالقوة',
+                    'فتح البثور الناتجة عن الحرق'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 21.51.12_60d8a315.mp4'
+            },
+            {
+                id: 'bleeding',
+                title: 'النزيف',
+                icon: 'fas fa-tint',
+                description: 'كيفية إيقاف النزيف الخارجي والحفاظ على الضغط',
+                steps: [
+                    'اغسل يديك إن أمكن أو استخدم قفازات لحماية نفسك',
+                    'اضغط مباشرة على الجرح بضمادة نظيفة أو قطعة قماش',
+                    'ارفع الجزء المصاب فوق مستوى القلب إن أمكن',
+                    'استمر في الضغط حتى توقف النزيف',
+                    'إذا تسرب الدم عبر الضمادة، أضف المزيد من الضمادات دون إزالة الأولى',
+                    'في حالة النزيف الشديد الذي لا يتوقف، اتصل بالإسعاف فورًا'
+                ],
+                warnings: [
+                    'إزالة الضمادة المشبعة بالدم',
+                    'استخدام الرباط الضاغط إلا في حالات النزيف الشديد',
+                    'تحريك المصاب بعنف إذا اشتبه في كسر'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 21.52.44_5eb043e8.mp4'
+            },
+            {
+                id: 'drowning',
+                title: 'الغرق',
+                icon: 'fas fa-swimming-pool',
+                description: 'خطوات إنقاذ شخص غريق وإنعاشه',
+                steps: [
+                    'أخرج المصاب من الماء بأمان مع حماية نفسك أولاً',
+                    'تحقق من التنفس والنبض',
+                    'إذا كان لا يتنفس، ابدأ الإنعاش القلبي الرئوي فورًا',
+                    'قم بـ 30 ضغطة صدر متبوعة بـ 2 نفس إنقاذ',
+                    'استمر حتى يعود التنفس أو تصل المساعدة الطبية',
+                    'حتى لو بدا المصاب بخير بعد الإنقاذ، يجب نقله للمستشفى'
+                ],
+                warnings: [
+                    'محاولة إخراج الماء من الرئتين (هذا خرافة)',
+                    'إهمال نقل المصاب للمستشفى حتى لو بدا بحالة جيدة',
+                    'تعريض المصاب لخطر الغرق مرة أخرى أثناء الإنقاذ'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 21.50.31_fa616cd0.mp4'
+            },
+            {
+                id: 'fainting',
+                title: 'الإغماء',
+                icon: 'fas fa-procedures',
+                description: 'ما يجب فعله عند فقدان الوعي المفاجئ',
+                steps: [
+                    'ضع المصاب على ظهره مع رفع قدميه حوالي 30 سم فوق مستوى القلب',
+                    'افحص مجرى التنفس وتأكد أنه مفتوح',
+                    'افك أي ملابس ضيقة حول الرقبة أو الصدر',
+                    'لا تقدم أي طعام أو شراب للمصاب حتى يستعيد وعيه بالكامل',
+                    'عند استعادة الوعي، اجلس المصاب ببطء وانتظر بضع دقائق قبل الوقوف',
+                    'إذا لم يستعد المصاب وعيه خلال دقيقة، اتصل بالإسعاف فورًا'
+                ],
+                warnings: [
+                    'هز المصاب أو صفع وجهه لمحاولة إفاقته',
+                    'محاولة إعطاء الماء أو الطعام لشخص فاقد الوعي',
+                    'إهمال الحالة إذا تكررت مرات الإغماء'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 22.02.24_3217b15d.mp4'
+            },
+            {
+                id: 'fractures',
+                title: 'الكسور',
+                icon: 'fas fa-bone',
+                description: 'التعامل مع الكسور العظمية حتى وصول المساعدة',
+                steps: [
+                    'اطلب المساعدة الطبية فورًا خاصة إذا كان الكسر مفتوحًا',
+                    'لا تحرك الجزء المصاب إلا للضرورة القصوى',
+                    'ثبت العضو المصاب باستخدام جبيرة أو قطعة خشب',
+                    'استخدم كمادات باردة لتقليل التورم (مع وضع قطعة قماش بين الجلد والكمادة)',
+                    'إذا كان الكسر مفتوحًا، غطه بضمادة نظيفة دون الضغط عليه',
+                    'راقب المصاب لظهور علامات الصدمة مثل شحوب الوجه أو التعرق البارد'
+                ],
+                warnings: [
+                    'محاولة إعادة العظم لمكانه الطبيعي',
+                    'تحريك المصاب بعنف خاصة في كسور العمود الفقري',
+                    'إهمال الكسور الصغيرة التي قد تسبب مضاعفات لاحقًا'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 22.03.25_af5f30cd.mp4'
+            },
+            {
+                id: 'poisoning',
+                title: 'التسمم',
+                icon: 'fas fa-skull-crossbones',
+                description: 'إجراءات الطوارئ في حالات التسمم الغذائي أو الكيميائي',
+                steps: [
+                    'حدد نوع المادة المسببة للتسمم إن أمكن',
+                    'في حالة التسمم عن طريق الفم، لا تحفز القيء إلا إذا نصحك مركز السموم بذلك',
+                    'في حالة التسمم الكيميائي على الجلد، اغسل المنطقة بالماء الجاري لمدة 15 دقيقة',
+                    'احتفظ بعينة من المادة المسببة للتسمم إن أمكن',
+                    'اتصل بمركز السموم أو الإسعاف فورًا وأخبرهم بنوع السم إن عرفته',
+                    'راقب العلامات الحيوية حتى وصول المساعدة'
+                ],
+                warnings: [
+                    'إعطاء أي مضاد للسموم دون استشارة طبية',
+                    'إعطاء الحليب أو الزيت في حالات التسمم الكيميائي',
+                    'التأخر في طلب المساعدة الطبية'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 22.02.07_f6fc3d99.mp4'
+            },
+            {
+                id: 'bites',
+                title: 'لدغات ولسعات',
+                icon: 'fas fa-spider',
+                description: 'التعامل مع لدغات الحشرات والثعابين',
+                steps: [
+                    'اغسل منطقة اللدغة بالماء والصابون',
+                    'ضع كمادة باردة لتخفيف الألم والتورم',
+                    'في حالة لسعات النحل، أزل الإبرة بلطف باستخدام بطاقة بلاستيكية',
+                    'في حالة لدغات الثعابين، حافظ على هدوء المصاب وثبت العضو المصاب',
+                    'راقب ظهور علامات الحساسية مثل صعوبة التنفس أو تورم الوجه',
+                    'في الحالات الشديدة، اتصل بالإسعاف فورًا'
+                ],
+                warnings: [
+                    'مص السم من الجرح',
+                    'وضع رباط ضاغط فوق اللدغة',
+                    'قطع الجرح أو كيه',
+                    'إعطاء المصاب أي مسكنات أو كحول'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 22.02.14_b8d63566.mp4'
+            },
+            {
+                id: 'heart-attack',
+                title: 'نوبة قلبية',
+                icon: 'fas fa-heartbeat',
+                description: 'علامات النوبة القلبية والإسعافات الأولية',
+                steps: [
+                    'تعرف على الأعراض: ألم في الصدر، ضيق تنفس، عرق بارد، غثيان',
+                    'اجعل المصاب يجلس في وضع مريح مع رفع الرأس قليلاً',
+                    'افك أي ملابس ضيقة حول الرقبة والصدر',
+                    'إذا كان المصاب واعيًا، أعطه قرص أسبرين (إذا لم يكن لديه حساسية)',
+                    'إذا فقد المصاب الوعي، ابدأ الإنعاش القلبي الرئوي فورًا',
+                    'اتصل بالإسعاف واذكر أنك تشتبه في نوبة قلبية'
+                ],
+                warnings: [
+                    'تجاهل الأعراض حتى لو كانت خفيفة',
+                    'محاولة نقل المصاب بنفسك إلى المستشفى',
+                    'إعطاء المصاب أي طعام أو شراب'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 21.51.59_e0af30d4.mp4'
+            },
+            {
+                id: 'choking',
+                title: 'الاختناق',
+                icon: 'fas fa-wind',
+                description: 'إنقاذ شخص يعاني من انسداد مجرى الهواء',
+                steps: [
+                    'اسأل المصاب "هل تختنق؟" إذا كان لا يستطيع الكلام أو السعال، تصرف فورًا',
+                    'قف خلف المصاب ولف ذراعيك حول وسطه',
+                    'ضع قبضة يد واحدة فوق سرته مباشرة، وامسكها باليد الأخرى',
+                    'أعط ضغطات سريعة إلى الداخل والأعلى (مناورة هيمليخ)',
+                    'استمر حتى يخرج الجسم الغريب أو يفقد المصاب وعيه',
+                    'إذا فقد المصاب وعيه، ابدأ الإنعاش القلبي الرئوي'
+                ],
+                warnings: [
+                    'ضرب الظهر لشخص واقف (قد يدفع الجسم الغريب للداخل)',
+                    'إجراء مناورة هيمليخ على الحوامل أو البدينين (استخدم ضغطات صدر بدلاً من البطن)',
+                    'التأخر في طلب المساعدة الطبية'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 21.53.59_4ea625fd.mp4'
+            },
+            {
+                id: 'epilepsy',
+                title: 'نوبة صرع',
+                icon: 'fas fa-brain',
+                description: 'كيفية التعامل مع نوبة الصرع',
+                steps: [
+                    'أبعد أي أجسام خطرة من حول المصاب',
+                    'ضع شيئًا ناعمًا تحت رأسه',
+                    'أدر المصاب على جانبه لتسهيل التنفس',
+                    'قم بقياس مدة النوبة',
+                    'ابق هادئًا وطمئن المحيطين',
+                    'بعد النوبة، ساعد المصاب على الجلوس في مكان آمن'
+                ],
+                warnings: [
+                    'محاولة إيقاف حركات المصاب أو تقييده',
+                    'وضع أي شيء في فم المصاب',
+                    'محاولة إعطاء الماء أو الدواء أثناء النوبة',
+                    'ترك المصاب وحده بعد النوبة مباشرة'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 22.03.05_6a3babb8.mp4'
+            },
+            {
+                id: 'stroke',
+                title: 'السكتة الدماغية',
+                icon: 'fas fa-stethoscope',
+                description: 'علامات السكتة الدماغية والإسعافات الأولية',
+                steps: [
+                    'تذكر الاختصار FAST: وجه مترهل، ضعف في الذراع، صعوبة في الكلام، وقت لطلب الإسعاف',
+                    'اطلب الإسعاف فورًا عند ملاحظة أي من هذه الأعراض',
+                    'سجل وقت بداية الأعراض (مهم للعلاج)',
+                    'اجعل المصاب يجلس أو يستلقي في وضع مريح',
+                    'لا تعط المصاب أي طعام أو شراب',
+                    'راقب العلامات الحيوية حتى وصول المساعدة'
+                ],
+                warnings: [
+                    'تجاهل الأعراض حتى لو اختفت',
+                    'محاولة نقل المصاب بنفسك إلى المستشفى',
+                    'إعطاء الأسبرين دون استشارة طبية'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 21.53.25_4d95f4c4.mp4'
+            },
+            {
+                id: 'heat-stroke',
+                title: 'ضربة شمس',
+                icon: 'fas fa-sun',
+                description: 'الإسعافات الأولية لضربة الشمس والإجهاد الحراري',
+                steps: [
+                    'انقل المصاب إلى مكان بارد ومظلل',
+                    'أزل الملابس الزائدة',
+                    'ضع كمادات باردة على الرقبة، الإبطين، والفخذين',
+                    'استخدم مروحة أو أي وسيلة لتحريك الهواء',
+                    'إذا كان المصاب واعيًا، أعطه ماءً باردًا ليشرب',
+                    'في الحالات الشديدة، اتصل بالإسعاف فورًا'
+                ],
+                warnings: [
+                    'استخدام الثلج مباشرة على الجلد',
+                    'إعطاء المشروبات الكحولية أو التي تحتوي على الكافيين',
+                    'ترك المصاب وحده',
+                    'التقليل من خطورة الحالة'
+                ],
+                video: 'vedhelp/WhatsApp Video 2025-06-10 at 22.01.51_c816f622.mp4'
+            }
+        ];
+
+        // تهيئة الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            renderEmergencyCards();
+            setupSearch();
+            
+            // تحميل حالة من URL إذا كان موجودًا
+            const urlParams = new URLSearchParams(window.location.search);
+            const emergencyId = urlParams.get('id');
+            if (emergencyId) {
+                showEmergencyDetails(emergencyId);
+            }
+        });
+
+        // عرض بطاقات الحالات الطارئة
+        function renderEmergencyCards(filteredEmergencies = null) {
+            const container = document.getElementById('emergencyContainer');
+            container.innerHTML = '';
+            
+            const emergenciesToRender = filteredEmergencies || emergencies;
+            
+            if (emergenciesToRender.length === 0) {
+                container.innerHTML = '<div class="no-results">لا توجد نتائج تطابق بحثك</div>';
+                return;
+            }
+            
+            emergenciesToRender.forEach((emergency, index) => {
+                const card = document.createElement('div');
+                card.className = 'emergency-card';
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.onclick = () => showEmergencyDetails(emergency.id);
+                
+                card.innerHTML = `
+                    <i class="${emergency.icon} emergency-icon"></i>
+                    <h2>${emergency.title}</h2>
+                    <p>${emergency.description}</p>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // إعداد وظيفة البحث
+        function setupSearch() {
+            const searchBar = document.querySelector('.search-bar');
+            searchBar.addEventListener('input', function(e) {
+                const searchTerm = e.target.value.toLowerCase();
+                const filtered = emergencies.filter(emergency => 
+                    emergency.title.toLowerCase().includes(searchTerm) || 
+                    emergency.description.toLowerCase().includes(searchTerm)
+                );
+                renderEmergencyCards(filtered);
+            });
+        }
+
+        // عرض تفاصيل الحالة
+        function showEmergencyDetails(id) {
+            const emergency = emergencies.find(e => e.id === id);
+            if (!emergency) return;
+            
+            // تحديث URL لإمكانية المشاركة
+            window.history.pushState({}, '', `?id=${id}`);
+            
+            document.getElementById('detailTitle').textContent = emergency.title;
+            
+            let content = `
+                <div class="steps-container">
+                    <h3><i class="fas fa-list-ol"></i> الخطوات الأساسية:</h3>
+                    <ol class="steps-list">
+                        ${emergency.steps.map(step => `<li>${step}</li>`).join('')}
+                    </ol>
+                </div>
+                
+                <div class="warning-box">
+                    <h3><i class="fas fa-exclamation-triangle"></i> تحذيرات مهمة:</h3>
+                    <ul>
+                        ${emergency.warnings.map(warning => `<li>${warning}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+            
+            if (emergency.video) {
+                content += `
+                    <h3><i class="fas fa-video"></i> فيديو توضيحي:</h3>
+                    <div class="video-container">
+                        <iframe src="${emergency.video}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('detailContent').innerHTML = content;
+            document.getElementById('emergencyDetails').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // إغلاق تفاصيل الحالة
+        function closeDetails() {
+            document.getElementById('emergencyDetails').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            window.history.pushState({}, '', window.location.pathname);
+        }
+
+        // طباعة التفاصيل
+        function printDetails() {
+            const originalContents = document.body.innerHTML;
+            const printContents = document.getElementById('emergencyDetails').innerHTML;
+            
+            document.body.innerHTML = `
+                <h1 style="text-align:center;color:${getComputedStyle(document.documentElement).getPropertyValue('--primary')};margin-bottom:20px;">
+                    ${document.getElementById('detailTitle').textContent}
+                </h1>
+                ${printContents}
+                <style>
+                    body { font-family: Arial; padding: 20px; }
+                    .btn, .close-btn, .details-header { display: none; }
+                    .steps-container { background: #f5f5f5; padding: 15px; border-radius: 5px; }
+                    .warning-box { background: #fff0f0; padding: 10px; border-left: 4px solid red; }
+                    .video-container iframe { width: 100%; height: 400px; }
+                    @media print {
+                        .video-container { display: none; }
+                    }
+                </style>
+            `;
+            
+            window.print();
+            document.body.innerHTML = originalContents;
+            document.getElementById('emergencyDetails').classList.add('active');
+        }
+
+        // مشاركة التفاصيل
+        function shareDetails() {
+            const title = document.getElementById('detailTitle').textContent;
+            const url = window.location.href.split('?')[0] + `?id=${emergencies.find(e => e.title === title).id}`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: `إسعافات أولية - ${title}`,
+                    text: `تعلم كيفية التعامل مع ${title} من خلال هذا الدليل`,
+                    url: url
+                }).catch(err => {
+                    console.log('Error sharing:', err);
+                    fallbackShare(url);
+                });
+            } else {
+                fallbackShare(url);
+            }
+        }
+        
+        function fallbackShare(url) {
+            prompt('انسخ الرابط لمشاركته:', url);
+        }
+
+        // تبديل الوضع الليلي
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.getElementById('darkModeToggle');
+            
+            if (document.body.classList.contains('dark-mode')) {
+                icon.innerHTML = '<i class="fas fa-sun"></i>';
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                icon.innerHTML = '<i class="fas fa-moon"></i>';
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        }
+
+        // التحقق من وضع التخزين المحلي للوضع الليلي
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            document.getElementById('darkModeToggle').innerHTML = '<i class="fas fa-sun"></i>';
+        }
+    </script>
+</body>
+</html>

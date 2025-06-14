@@ -1,0 +1,224 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>متتبع العادات الصحية</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(to bottom, #dbeeff, #ffffff);
+      padding: 30px;
+      color: #333;
+      text-align: center;
+    }
+
+    .container {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 450px;
+      margin: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      color: #0077b6;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #00b4d8;
+      color: white;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #0077b6;
+    }
+
+    .secondary-btn {
+      background-color: #f94144;
+      margin-top: 10px;
+    }
+
+    canvas {
+      margin-top: 40px;
+      max-width: 100%;
+    }
+
+    .tip {
+      margin-top: 30px;
+      font-style: italic;
+      color: #555;
+    }
+
+    .last-entry {
+      margin-top: 20px;
+      background-color: #f1f1f1;
+      padding: 10px;
+      border-radius: 8px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>متتبع العادات الصحية</h2>
+
+    <label for="water">عدد أكواب الماء</label>
+    <input type="number" id="water" min="0" max="20" />
+
+    <label for="sleep">عدد ساعات النوم</label>
+    <input type="number" id="sleep" min="0" max="24" />
+
+    <label for="exercise">هل مارست الرياضة؟</label>
+    <select id="exercise">
+      <option value="نعم">نعم</option>
+      <option value="لا">لا</option>
+    </select>
+
+    <button onclick="saveData()">حفظ اليوم</button>
+    <button class="secondary-btn" onclick="deleteToday()">حذف بيانات اليوم</button>
+
+    <div class="last-entry" id="lastEntryDisplay"></div>
+  </div>
+
+  <canvas id="weeklyChart"></canvas>
+
+  <div class="tip" id="dailyTip"></div>
+
+  <script>
+    const tips = [
+      "اشرب كوب ماء فور استيقاظك.",
+      "نم 7-8 ساعات يوميًا لتحسين صحتك.",
+      "مارس 10 دقائق رياضة حتى لو مشغول.",
+      "قلل من السكر وحاول تستبدله بالفواكه.",
+      "خذ نفس عميق واهتم براحتك النفسية."
+    ];
+
+    function showDailyTip() {
+      const randomTip = tips[Math.floor(Math.random() * tips.length)];
+      document.getElementById("dailyTip").innerText = "نصيحة اليوم: " + randomTip;
+    }
+
+    function saveData() {
+      const water = parseInt(document.getElementById("water").value) || 0;
+      const sleep = parseInt(document.getElementById("sleep").value) || 0;
+      const exercise = document.getElementById("exercise").value === "نعم" ? 1 : 0;
+      const date = new Date().toISOString().split('T')[0];
+
+      const dayData = { date, water, sleep, exercise };
+
+      let healthData = JSON.parse(localStorage.getItem("healthData")) || [];
+      healthData = healthData.filter(entry => entry.date !== date);
+      healthData.push(dayData);
+      localStorage.setItem("healthData", JSON.stringify(healthData));
+
+      renderChart();
+      showLastEntry();
+    }
+
+    function deleteToday() {
+      const date = new Date().toISOString().split('T')[0];
+      let healthData = JSON.parse(localStorage.getItem("healthData")) || [];
+      healthData = healthData.filter(entry => entry.date !== date);
+      localStorage.setItem("healthData", JSON.stringify(healthData));
+      renderChart();
+      showLastEntry();
+      alert("تم حذف بيانات اليوم.");
+    }
+
+    function renderChart() {
+      const rawData = JSON.parse(localStorage.getItem("healthData")) || [];
+      const last7 = rawData.slice(-7);
+
+      const labels = last7.map(entry => entry.date);
+      const waterData = last7.map(entry => entry.water);
+      const sleepData = last7.map(entry => entry.sleep);
+      const exerciseData = last7.map(entry => entry.exercise * 100);
+
+      const ctx = document.getElementById('weeklyChart').getContext('2d');
+
+      if (window.myChart) {
+        window.myChart.destroy();
+      }
+
+      window.myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            {
+              label: 'أكواب الماء',
+              data: waterData,
+              backgroundColor: '#00b4d8'
+            },
+            {
+              label: 'ساعات النوم',
+              data: sleepData,
+              backgroundColor: '#90e0ef'
+            },
+            {
+              label: 'ممارسة الرياضة (%)',
+              data: exerciseData,
+              backgroundColor: '#0077b6'
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { position: 'top' },
+            title: { display: true, text: 'تقرير العادات الصحية (آخر 7 أيام)' }
+          },
+          scales: {
+            y: {
+              beginAtZero: true
+            }
+          }
+        }
+      });
+    }
+
+    function showLastEntry() {
+      const healthData = JSON.parse(localStorage.getItem("healthData")) || [];
+      if (healthData.length === 0) {
+        document.getElementById("lastEntryDisplay").innerText = "";
+        return;
+      }
+
+      const last = healthData[healthData.length - 1];
+      document.getElementById("lastEntryDisplay").innerText =
+        `آخر إدخال: ${last.date} - ماء: ${last.water} أكواب، نوم: ${last.sleep} ساعات، رياضة: ${last.exercise ? "نعم" : "لا"}`;
+    }
+
+    window.onload = () => {
+      renderChart();
+      showLastEntry();
+      showDailyTip();
+    };
+  </script>
+
+</body>
+</html>

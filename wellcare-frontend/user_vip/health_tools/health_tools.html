@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>أدوات صحية متقدمة</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 40px;
+            background-color: #e3f2fd;
+            color: #1a237e;
+        }
+        h2 {
+            color: #1565c0;
+        }
+        .tool {
+            background-color: #ffffff;
+            border: 1px solid #bbdefb;
+            padding: 25px;
+            margin-bottom: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #90caf9;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+        button {
+            background-color: #42a5f5;
+            color: white;
+            border: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #1e88e5;
+        }
+        .result, .suggestions {
+            margin-top: 20px;
+            font-weight: bold;
+            color: #0d47a1;
+        }
+        .suggestions {
+            background-color: #e1f5fe;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px dashed #81d4fa;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="tool">
+        <h2>حاسبة مؤشر كتلة الجسم (BMI)</h2>
+        <label>الوزن (كجم):</label>
+        <input type="number" id="weight">
+        <label>الطول (سم):</label>
+        <input type="number" id="height">
+        <button onclick="calculateBMI()">احسب</button>
+        <div class="result" id="bmiResult"></div>
+    </div>
+
+    <div class="tool">
+        <h2>حاسبة السعرات الحرارية + خطة غذائية</h2>
+        <label>الوزن (كجم):</label>
+        <input type="number" id="bmrWeight">
+        <label>الطول (سم):</label>
+        <input type="number" id="bmrHeight">
+        <label>العمر (سنة):</label>
+        <input type="number" id="age">
+        <label>الجنس:</label>
+        <select id="gender">
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+        </select>
+        <label>مستوى النشاط:</label>
+        <select id="activity">
+            <option value="1.2">خامل</option>
+            <option value="1.375">نشاط خفيف</option>
+            <option value="1.55">نشاط متوسط</option>
+            <option value="1.725">نشاط عالي</option>
+            <option value="1.9">نشاط مكثف</option>
+        </select>
+        <label>الهدف:</label>
+        <select id="goal">
+            <option value="deficit">خسارة وزن</option>
+            <option value="maintain">تثبيت الوزن</option>
+            <option value="surplus">زيادة وزن</option>
+        </select>
+        <label>محيط الخصر (سم):</label>
+        <input type="number" id="waist">
+        <label>محيط الأرداف (سم):</label>
+        <input type="number" id="hips">
+        <label>محيط الصدر (سم):</label>
+        <input type="number" id="chest">
+        <button onclick="calculateBMR()">احسب</button>
+        <div class="result" id="bmrResult"></div>
+        <div class="suggestions" id="bmrSuggestions"></div>
+        <div class="suggestions" id="mealPlan"></div>
+        <button onclick="printResults()">طباعة النتائج</button>
+        <button onclick="downloadPDF()">تحميل النتائج PDF</button>
+    </div>
+
+    <script>
+        function calculateBMI() {
+            let weight = parseFloat(document.getElementById('weight').value);
+            let height = parseFloat(document.getElementById('height').value) / 100;
+            let bmiBox = document.getElementById('bmiResult');
+
+            if (!weight || !height) {
+                bmiBox.innerText = 'الرجاء إدخال القيم بشكل صحيح.';
+                return;
+            }
+
+            let bmi = weight / (height * height);
+            let message = 'مؤشر كتلة الجسم (BMI): ' + bmi.toFixed(2);
+            if (bmi < 18.5) message += ' - نحافة.';
+            else if (bmi < 25) message += ' - وزن مثالي.';
+            else if (bmi < 30) message += ' - زيادة وزن.';
+            else message += ' - سمنة.';
+
+            bmiBox.innerText = message;
+        }
+
+        function calculateBMR() {
+            let weight = parseFloat(document.getElementById('bmrWeight').value);
+            let height = parseFloat(document.getElementById('bmrHeight').value);
+            let age = parseInt(document.getElementById('age').value);
+            let gender = document.getElementById('gender').value;
+            let activity = parseFloat(document.getElementById('activity').value);
+            let goal = document.getElementById('goal').value;
+            let bmrBox = document.getElementById('bmrResult');
+
+            if (!weight || !height || !age) {
+                bmrBox.innerText = 'الرجاء إدخال القيم بشكل صحيح.';
+                return;
+            }
+
+            let bmr = gender === 'male'
+                ? 10 * weight + 6.25 * height - 5 * age + 5
+                : 10 * weight + 6.25 * height - 5 * age - 161;
+
+            let tdee = bmr * activity;
+            if (goal === 'deficit') tdee -= 400;
+            if (goal === 'surplus') tdee += 300;
+
+            bmrBox.innerText = `السعرات اليومية حسب النشاط والهدف: ${Math.round(tdee)} سعرة/يوم`;
+            showSuggestions(tdee);
+            generateMealPlan(tdee);
+        }
+
+        function showSuggestions(calories) {
+            let foods = '', reduce = '';
+            if (calories < 1600) {
+                foods = 'زبادي، شوربة عدس، دجاج مشوي، تفاح.';
+                reduce = 'السكريات، المقليات، المشروبات الغازية.';
+            } else if (calories < 2200) {
+                foods = 'بيض، خبز حبوب، تونة، أرز بني.';
+                reduce = 'الدهون، الخبز الأبيض، البطاطس المقلية.';
+            } else {
+                foods = 'شوفان، صدور دجاج، فواكه، مكسرات.';
+                reduce = 'الوجبات السريعة، السكريات.';
+            }
+
+            document.getElementById('bmrSuggestions').innerHTML = `
+                <strong>اقتراحات غذائية:</strong><br>
+                - أطعمة مناسبة: ${foods}<br>
+                - يُفضل التقليل من: ${reduce}
+            `;
+        }
+
+        function generateMealPlan(calories) {
+            let mealPlan = document.getElementById('mealPlan');
+            let breakfast = '', lunch = '', dinner = '', snack = '';
+
+            if (calories < 1600) {
+                breakfast = 'بيض + توست أسمر + خيار';
+                lunch = 'صدر دجاج + أرز بني + خضار';
+                dinner = 'شوربة عدس + سلطة';
+                snack = 'تفاحة أو حفنة لوز';
+            } else if (calories < 2200) {
+                breakfast = 'شوفان + موز';
+                lunch = 'سمك + بطاطا + سلطة';
+                dinner = 'تونة + خبز + زبادي';
+                snack = 'لبنة + جزر أو مكسرات';
+            } else {
+                breakfast = 'توست + بيض + عصير طبيعي';
+                lunch = 'لحم + مكرونة + سلطة';
+                dinner = 'زبادي + فواكه + مكسرات';
+                snack = 'تمر + زبدة فول سوداني';
+            }
+
+            mealPlan.innerHTML = `
+                <strong>خطة غذائية يومية:</strong><br>
+                - الإفطار: ${breakfast}<br>
+                - الغداء: ${lunch}<br>
+                - العشاء: ${dinner}<br>
+                - سناك: ${snack}
+            `;
+        }
+
+        function printResults() {
+            window.print();
+        }
+
+        function downloadPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            let bmi = document.getElementById('bmiResult').innerText;
+            let bmr = document.getElementById('bmrResult').innerText;
+            let suggestions = document.getElementById('bmrSuggestions').innerText;
+            let meals = document.getElementById('mealPlan').innerText;
+
+            doc.setFont("Arial");
+            doc.setFontSize(12);
+            doc.text("نتائج التحليل الصحي", 10, 10);
+            doc.text(bmi, 10, 20);
+            doc.text(bmr, 10, 30);
+            doc.text(suggestions, 10, 50);
+            doc.text(meals, 10, 100);
+
+            doc.save("health-report.pdf");
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,286 @@
+:root {
+    --baby-blue: #89CFF0;
+    --dark-blue: #1E3A8A;
+    --light-blue: #E6F2FF;
+    --white: #FFFFFF;
+    --gray: #F5F5F5;
+    --dark-gray: #333333;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Tajawal', sans-serif;
+}
+
+body {
+    background-color: var(--light-blue);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+}
+
+header h1 {
+    color: var(--dark-blue);
+    margin-bottom: 10px;
+    font-size: 2.2rem;
+}
+
+header p {
+    color: var(--dark-gray);
+    font-size: 1.1rem;
+}
+
+header i {
+    margin-left: 10px;
+    color: var(--baby-blue);
+}
+
+main {
+    background-color: var(--white);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 30px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--dark-blue);
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: border 0.3s;
+}
+
+input[type="text"]:focus {
+    border-color: var(--baby-blue);
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(137, 207, 240, 0.2);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.checkbox-group input {
+    margin-left: 10px;
+}
+
+.compare-btn {
+    background-color: var(--baby-blue);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    width: 100%;
+    font-weight: 500;
+}
+
+.compare-btn:hover {
+    background-color: #6BB9E0;
+}
+
+.compare-btn i {
+    margin-left: 8px;
+}
+
+.loading {
+    text-align: center;
+    padding: 30px;
+    display: none;
+}
+
+.spinner {
+    border: 4px solid rgba(0, 0, 0, 0.1);
+    border-radius: 50%;
+    border-top: 4px solid var(--baby-blue);
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 20px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.comparison-result {
+    display: none;
+    margin-top: 30px;
+}
+
+.comparison-result h2 {
+    color: var(--dark-blue);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+}
+
+.drugs-names {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background-color: var(--gray);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.drugs-names h3 {
+    width: 48%;
+    text-align: center;
+    color: var(--dark-blue);
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.comparison-row {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+
+.comparison-row.header {
+    font-weight: bold;
+    background-color: var(--gray);
+    border-radius: 5px 5px 0 0;
+}
+
+.comparison-category {
+    width: 30%;
+    padding: 0 10px;
+    font-weight: 500;
+    color: var(--dark-blue);
+    display: flex;
+    align-items: center;
+}
+
+.comparison-category i {
+    margin-left: 8px;
+}
+
+.drug1-data, .drug2-data {
+    width: 35%;
+    padding: 0 10px;
+}
+
+.new-comparison-btn {
+    background-color: var(--dark-blue);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: block;
+    margin: 0 auto;
+}
+
+.new-comparison-btn:hover {
+    background-color: #142B6B;
+}
+
+.error-message {
+    background-color: #FFEBEE;
+    color: #C62828;
+    padding: 15px;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 20px;
+    display: none;
+}
+
+.error-message i {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+}
+
+.disclaimer {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 10px;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+    
+    header h1 {
+        font-size: 1.8rem;
+    }
+    
+    main {
+        padding: 20px;
+    }
+    
+    .drugs-names {
+        flex-direction: column;
+    }
+    
+    .drugs-names h3 {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    
+    .comparison-row {
+        flex-direction: column;
+    }
+    
+    .comparison-category, .drug1-data, .drug2-data {
+        width: 100%;
+        padding: 5px 0;
+    }
+    
+    .comparison-category {
+        font-weight: bold;
+        margin-top: 10px;
+    }
+}

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WellCare - Doctor Dashboard</title>
+    <style>
+        :root {
+            --baby-blue: #89CFF0;
+            --baby-blue-light: #E0F7FA;
+            --baby-blue-dark: #4DB6AC;
+            --white: #FFFFFF;
+            --gray: #F5F5F5;
+            --text: #333333;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--baby-blue-light);
+            color: var(--text);
+        }
+        
+        .header {
+            background-color: var(--baby-blue);
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            font-weight: 300;
+        }
+        
+        .header .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .welcome-message h2 {
+            color: var(--baby-blue-dark);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .services {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .service-card {
+            background-color: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-align: center;
+            padding: 30px 20px;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .service-icon {
+            font-size: 4rem;
+            color: var(--baby-blue);
+            margin-bottom: 20px;
+        }
+        
+        .service-card h3 {
+            color: var(--baby-blue-dark);
+            margin-bottom: 15px;
+        }
+        
+        .service-card p {
+            color: var(--text);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--baby-blue);
+            color: var(--white);
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn:hover {
+            background-color: var(--baby-blue-dark);
+        }
+        
+        footer {
+            background-color: var(--baby-blue);
+            color: var(--white);
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 50px;
+        }
+        
+        @media (max-width: 768px) {
+            .services {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <span class="logo">WellCare</span>
+        <h1>Hello Doctor</h1>
+    </div>
+    
+    <div class="container">
+        <div class="welcome-message">
+            <h2>Welcome to Your Page</h2>
+            <p>Manage your patients and appointments with our comprehensive tools</p>
+        </div>
+        
+        <div class="services">
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h3>Patient Chat</h3>
+                <p>Communicate securely with your patients through our encrypted messaging system.</p>
+                <a href="http://localhost/clinic_chat/" class="btn">Start Chatting</a>
+            </div>
+            
+            <div class="service-card">
+                <div class="service-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3>Video Meeting</h3>
+                <p>Conduct virtual consultations with your patients through our integrated video platform.</p>
+                <a href="../doctor.html" class="btn">Start Meeting</a>
+            </div>
+            
+
+ 
+          <div class="service-card">
+    <div class="service-icon">
+        <i class="fas fa-calendar-check"></i>
+    </div>
+    <h3>Clinic Appointment</h3>
+    <p>>Manage and schedule in-person appointments at your clinic</p>
+    <a href="doctor_dashboard.php" class="btn">booking</a>
+</div>
+
+
+
+            
+
+          <div class="service-card"> <div class="service-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Medical consultations</h3>
+                <p>Future consultations from the user.</p>
+                <a href="doctor_consultations.php" class="btn">Book Appointment</a>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>&copy; 2025 WellCare. All rights reserved.</p>
+    </footer>
+</body>
+</html>

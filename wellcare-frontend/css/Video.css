@@ -1,0 +1,269 @@
+/* تنسيقات الصفحة الأساسية */
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: #f3f4f6;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow-x: hidden;
+    animation: fadeIn 1s ease-in-out;
+}
+
+/* تأثير التحميل العام */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* شريط التنقل */
+.header {
+    background-color: #2196f3;
+    padding: 15px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+    from { transform: translateY(-100%); }
+    to { transform: translateY(0); }
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 50px;
+}
+
+.header .logo {
+    font-size: 2rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding-left: 50px;
+}
+
+.header .main-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 15px;
+}
+
+.header .main-nav a {
+    color: #fff;
+    font-size: 1.2rem;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.header .main-nav a:hover, .header .main-nav .active {
+    background-color: #134de2;
+}
+
+/* قسم الفيديوهات */
+.videos-section {
+    padding: 50px 20px;
+    text-align: center;
+    background-color: #ffffff;
+    margin-top: 20px;
+    animation: fadeIn 1.5s ease-in-out;
+}
+
+.videos-section .main-title {
+    font-size: 2.5rem;
+    color: #2196f3;
+    margin-bottom: 10px;
+    animation: slideInFromLeft 1s ease-out;
+}
+
+@keyframes slideInFromLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+.videos-section .section-description {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 40px;
+    animation: fadeIn 1.2s ease-out;
+}
+
+/* تنظيم الفيديوهات في شبكة */
+.videos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0 20px;
+    animation: fadeInUp 1.5s ease-out;
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .videos-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .videos-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* بطاقة الفيديو */
+.video-card {
+    position: relative;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+    max-width: 100%;
+    height: 450px;
+    background-color: #fff;
+    animation: bounceIn 0.8s ease;
+}
+
+@keyframes bounceIn {
+    0% { opacity: 0; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.video-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* تأثيرات داخل الفيديو */
+.video-thumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 10px;
+    background: rgba(0, 123, 255, 0.85);
+    color: #fff;
+    opacity: 0;
+    transition: opacity 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.video-card:hover .overlay {
+    opacity: 1;
+}
+
+.overlay h3 {
+    font-size: 1.2rem;
+    margin: 5px 0;
+}
+
+.overlay p {
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
+
+.play-button {
+    background: #1a5bb1;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    color: #fff;
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
+}
+
+.play-button:hover {
+    background-color: #134de2;
+}
+
+/* المودال */
+.modal {
+    display: none; /* إخفاء المودال بشكل افتراضي */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s;
+}
+
+.modal.show {
+    display: flex; /* إظهار المودال عند إضافة الكلاس show */
+    opacity: 1;
+    visibility: visible;
+    animation: scaleUp 0.4s ease-in-out;
+}
+
+@keyframes scaleUp {
+    from { transform: scale(0.8); }
+    to { transform: scale(1); }
+}
+
+/* الفوتر */
+.footer {
+    background-color: #2196f3;
+    padding: 15px;
+    text-align: center;
+    color: #fff;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.search-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 10px;
+    font-size: 16px;
+    width: 60%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.search-button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}

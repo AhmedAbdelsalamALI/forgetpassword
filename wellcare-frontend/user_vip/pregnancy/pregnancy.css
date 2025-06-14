@@ -1,0 +1,277 @@
+/* أساسيات الصفحة */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #d42d7b;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    color: #4b82d3;
+    margin-bottom: 10px;
+}
+
+header p {
+    color: #666;
+}
+
+/* قسم الحاسبة */
+.calculator-section {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.calculator-section h2 {
+    color: #89CFF0;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+.input-group input,
+.input-group select {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    background-color: #4862f2;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #d42d7b;
+}
+
+/* نتائج الحساب */
+#results {
+    margin-top: 30px;
+    display: none;
+}
+
+.result-box {
+    background-color: #f9f3f3;
+    padding: 20px;
+    border-radius: 8px;
+    border-left: 5px solid #e83e8c;
+}
+
+.result-box h3 {
+    color: #e83e8c;
+    margin-bottom: 15px;
+}
+
+.result-box p {
+    margin-bottom: 10px;
+}
+
+.highlight {
+    color: #e83e8c;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* خط الحمل الزمني */
+.pregnancy-timeline {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pregnancy-timeline h2 {
+    color: #e83e8c;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.timeline-nav {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.timeline-nav-btn {
+    background-color: #f0f0f0;
+    color: #555;
+    padding: 8px 15px;
+    font-size: 14px;
+}
+
+.timeline-nav-btn.active {
+    background-color: #e83e8c;
+    color: white;
+}
+
+.timeline-weeks {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 10px;
+}
+
+.week-card {
+    background-color: #f9f3f3;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+.week-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.week-card h4 {
+    color: #e83e8c;
+    margin-bottom: 5px;
+}
+
+.week-card p {
+    font-size: 14px;
+    color: #666;
+}
+
+.week-card.active {
+    background-color: #e83e8c;
+    color: white;
+}
+
+.week-card.active h4,
+.week-card.active p {
+    color: white;
+}
+
+/* معلومات الحمل */
+.pregnancy-info {
+    background-color: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pregnancy-info h2 {
+    color: #e83e8c;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tab-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background-color: #f0f0f0;
+    color: #555;
+    padding: 10px 20px;
+    font-size: 15px;
+}
+
+.tab-btn.active {
+    background-color: #e83e8c;
+    color: white;
+}
+
+.tab-content {
+    display: none;
+    padding: 20px;
+    background-color: #f9f3f3;
+    border-radius: 8px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.tab-content h3 {
+    color: #e83e8c;
+    margin-bottom: 15px;
+}
+
+.tab-content ul {
+    padding-left: 20px;
+}
+
+.tab-content li {
+    margin-bottom: 8px;
+}
+
+/* تذييل الصفحة */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+    font-size: 14px;
+}
+
+/* للشاشات الصغيرة */
+@media (max-width: 768px) {
+    .timeline-weeks {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    }
+    
+    .tab-buttons, .timeline-nav {
+        flex-direction: column;
+    }
+}
+
+.hidden {
+    display: none;
+}

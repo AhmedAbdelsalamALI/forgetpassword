@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المقالات الطبية - Wellcare</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+        }
+
+        .header h1 {
+            color: #1976d2;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            color: #424242;
+            font-size: 1.2rem;
+            opacity: 0.8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .article-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(25, 118, 210, 0.15);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .article-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(25, 118, 210, 0.25);
+        }
+
+        .article-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #81d4fa, #42a5f5, #1976d2);
+        }
+
+        .article-icon {
+            padding: 25px;
+            text-align: center;
+            background: linear-gradient(135deg, #e1f5fe 0%, #b3e5fc 100%);
+        }
+
+        .article-icon .icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 24px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.3);
+        }
+
+        .article-content {
+            padding: 25px;
+        }
+
+        .article-title {
+            color: #1976d2;
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .article-excerpt {
+            color: #666;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .article-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .article-date {
+            color: #81d4fa;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .read-more {
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .read-more:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(25, 118, 210, 0.4);
+        }
+
+        .search-bar {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e1f5fe;
+            border-radius: 10px;
+            font-size: 1rem;
+            background: #fafafa;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #42a5f5;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(66, 165, 245, 0.1);
+        }
+
+        .category-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 30px;
+            justify-content: center;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: #1976d2;
+            padding: 10px 20px;
+            border: 2px solid #e1f5fe;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .category-btn:hover,
+        .category-btn.active {
+            background: linear-gradient(135deg, #42a5f5, #1976d2);
+            color: white;
+            border-color: #1976d2;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .category-filter {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: #aaa;
+            float: left;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close:hover {
+            color: #1976d2;
+            background: #e1f5fe;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🏥 Wellcare</h1>
+        <p>مقالات طبية موثوقة لحياة صحية أفضل</p>
+    </div>
+
+    <div class="container">
+        <div class="search-bar">
+            <input type="text" class="search-input" placeholder="ابحث في المقالات الطبية..." id="searchInput">
+        </div>
+
+        <div class="category-filter">
+            <button class="category-btn active" data-category="all">جميع المقالات</button>
+            <button class="category-btn" data-category="heart">القلب</button>
+            <button class="category-btn" data-category="nutrition">التغذية</button>
+            <button class="category-btn" data-category="mental">الصحة النفسية</button>
+            <button class="category-btn" data-category="general">عام</button>
+        </div>
+
+        <div class="articles-grid" id="articlesGrid">
+            <!-- المقالات ستتم إضافتها هنا بـ JavaScript -->
+        </div>
+    </div>
+
+    <!-- Modal للمقال الكامل -->
+    <div id="articleModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        const articles = [
+            {
+                id: 1,
+                title: "أهمية شرب الماء للصحة العامة",
+                excerpt: "الماء هو أساس الحياة ويلعب دوراً حيوياً في جميع وظائف الجسم. تعرف على الكمية المناسبة وفوائد الترطيب الصحيح.",
+                category: "general",
+                date: "2025-06-01",
+                icon: "💧",
+                content: "الماء يشكل حوالي 60% من وزن الجسم ويلعب دوراً أساسياً في تنظيم درجة حرارة الجسم، نقل المواد الغذائية، وإزالة السموم. يُنصح بشرب 8-10 أكواب من الماء يومياً للحفاظ على الترطيب الأمثل."
+            },
+            {
+                id: 2,
+                title: "التغذية المتوازنة وأثرها على الصحة",
+                excerpt: "النظام الغذائي المتوازن يوفر العناصر الغذائية الأساسية للجسم. اكتشف كيفية بناء وجبات صحية ومتنوعة.",
+                category: "nutrition",
+                date: "2025-05-28",
+                icon: "🥗",
+                content: "التغذية المتوازنة تتضمن تناول مجموعة متنوعة من الأطعمة من جميع المجموعات الغذائية. يجب أن تشمل الوجبات الخضار والفواكه والحبوب الكاملة والبروتينات الصحية."
+            },
+            {
+                id: 3,
+                title: "فوائد التمرين الرياضي المنتظم",
+                excerpt: "النشاط البدني المنتظم يحسن الصحة البدنية والنفسية. تعلم كيفية دمج التمارين في روتينك اليومي.",
+                category: "general",
+                date: "2025-05-25",
+                icon: "🏃‍♂️",
+                content: "التمرين المنتظم يقوي القلب والعضلات، يحسن المزاج، ويقلل من خطر الإصابة بالأمراض المزمنة. يُنصح بممارسة 150 دقيقة من النشاط المعتدل أسبوعياً."
+            },
+            {
+                id: 4,
+                title: "أعراض أمراض القلب وطرق الوقاية",
+                excerpt: "أمراض القلب من الأسباب الرئيسية للوفاة عالمياً. تعرف على العلامات التحذيرية وطرق الحماية.",
+                category: "heart",
+                date: "2025-05-22",
+                icon: "❤️",
+                content: "أعراض أمراض القلب تشمل ألم الصدر وضيق التنفس والإرهاق. يمكن الوقاية من خلال النظام الغذائي الصحي والتمرين المنتظم وتجنب التدخين."
+            },
+            {
+                id: 5,
+                title: "إدارة التوتر والضغط النفسي",
+                excerpt: "التوتر المزمن يؤثر سلباً على الصحة الجسدية والنفسية. اكتشف تقنيات فعالة لإدارة الضغوط اليومية.",
+                category: "mental",
+                date: "2025-05-20",
+                icon: "🧘‍♀️",
+                content: "إدارة التوتر تتطلب تقنيات مثل التنفس العميق والتأمل والنشاط البدني. من المهم تحديد مصادر التوتر ووضع استراتيجيات للتعامل معها."
+            },
+            {
+                id: 6,
+                title: "أهمية النوم الصحي",
+                excerpt: "النوم الجيد ضروري لصحة الجسم والعقل. تعلم عادات النوم الصحية لتحسين جودة حياتك.",
+                category: "general",
+                date: "2025-05-18",
+                icon: "😴",
+                content: "النوم الكافي (7-9 ساعات للبالغين) يساعد في إصلاح الأنسجة وتقوية المناعة وتحسين الذاكرة. يُنصح بالحفاظ على روتين نوم منتظم."
+            },
+            {
+                id: 7,
+                title: "فوائد الفيتامينات والمعادن",
+                excerpt: "الفيتامينات والمعادن ضرورية لوظائف الجسم الحيوية. اعرف المصادر الطبيعية وأهمية كل عنصر.",
+                category: "nutrition",
+                date: "2025-05-15",
+                icon: "💊",
+                content: "الفيتامينات والمعادن تلعب أدواراً حيوية في التمثيل الغذائي وتقوية المناعة. يُفضل الحصول عليها من مصادر طبيعية متنوعة."
+            },
+            {
+                id: 8,
+                title: "الوقاية من السكري النوع الثاني",
+                excerpt: "السكري النوع الثاني قابل للوقاية في كثير من الحالات. تعرف على العوامل المؤثرة وطرق الحماية.",
+                category: "general",
+                date: "2025-05-12",
+                icon: "🩺",
+                content: "الوقاية من السكري تتطلب الحفاظ على وزن صحي، النشاط البدني المنتظم، والنظام الغذائي المتوازن منخفض السكريات المضافة."
+            },
+            {
+                id: 9,
+                title: "صحة الجهاز الهضمي",
+                excerpt: "الجهاز الهضمي الصحي أساس الصحة العامة. اكتشف كيفية الحفاظ على صحة الأمعاء والهضم السليم.",
+                category: "general",
+                date: "2025-05-10",
+                icon: "🦠",
+                content: "صحة الجهاز الهضمي تتطلب تناول الألياف والبروبيوتيك، شرب الماء الكافي، وتجنب الأطعمة المصنعة والدهون المشبعة."
+            },
+            {
+                id: 10,
+                title: "الاكتئاب والقلق: العلامات والعلاج",
+                excerpt: "الاكتئاب والقلق من الاضطرابات النفسية الشائعة. تعرف على العلامات وخيارات العلاج المتاحة.",
+                category: "mental",
+                date: "2025-05-08",
+                icon: "🧠",
+                content: "الاكتئاب والقلق يمكن علاجهما بفعالية من خلال العلاج النفسي والدوائي. من المهم طلب المساعدة المهنية عند الحاجة."
+            },
+            {
+                id: 11,
+                title: "ضغط الدم المرتفع والسيطرة عليه",
+                excerpt: "ضغط الدم المرتفع 'القاتل الصامت' يتطلب مراقبة مستمرة. تعلم كيفية قياسه والتحكم فيه طبيعياً.",
+                category: "heart",
+                date: "2025-05-05",
+                icon: "📈",
+                content: "السيطرة على ضغط الدم تتطلب تقليل الملح، النشاط البدني، إدارة التوتر، والحفاظ على وزن صحي. المتابعة الطبية ضرورية."
+            },
+            {
+                id: 12,
+                title: "التدخين وأضراره على الصحة",
+                excerpt: "التدخين يضر بكل أعضاء الجسم تقريباً. اكتشف الأضرار الصحية وطرق الإقلاع الفعالة.",
+                category: "general",
+                date: "2025-05-03",
+                icon: "🚭",
+                content: "التدخين يزيد خطر السرطان وأمراض القلب والسكتة الدماغية. الإقلاع عن التدخين يحسن الصحة فوراً ويقلل المخاطر على المدى الطويل."
+            },
+            {
+                id: 13,
+                title: "صحة العظام والوقاية من هشاشة العظام",
+                excerpt: "العظام القوية ضرورية للحركة والاستقلالية. تعرف على كيفية بناء والحفاظ على كثافة العظام.",
+                category: "general",
+                date: "2025-05-01",
+                icon: "🦴",
+                content: "صحة العظام تتطلب الكالسيوم وفيتامين د والنشاط البدني. التمارين الحاملة للوزن والمقاومة تقوي العظام وتمنع الهشاشة."
+            },
+            {
+                id: 14,
+                title: "الكوليسترول وصحة القلب",
+                excerpt: "مستويات الكوليسترول تؤثر على صحة القلب والأوعية الدموية. تعلم كيفية إدارة الكوليسترول طبيعياً.",
+                category: "heart",
+                date: "2025-04-28",
+                icon: "🫀",
+                content: "إدارة الكوليسترول تتطلب تناول الألياف والدهون الصحية، تجنب الدهون المشبعة، والنشاط البدني المنتظم."
+            },
+            {
+                id: 15,
+                title: "الحساسية الغذائية والتعامل معها",
+                excerpt: "الحساسية الغذائية تتطلب إدارة دقيقة لتجنب المضاعفات. اعرف الأعراض وطرق التعامل الآمن.",
+                category: "nutrition",
+                date: "2025-04-25",
+                icon: "🚫",
+                content: "التعامل مع الحساسية الغذائية يتطلب قراءة الملصقات بعناية، حمل الأدوية الطارئة، والتخطيط المسبق للوجبات."
+            },
+            {
+                id: 16,
+                title: "الصحة النفسية في العمل",
+                excerpt: "بيئة العمل تؤثر على الصحة النفسية. تعرف على استراتيجيات الحفاظ على التوازن المهني والشخصي.",
+                category: "mental",
+                date: "2025-04-22",
+                icon: "💼",
+                content: "الصحة النفسية في العمل تتطلب حدود واضحة، فترات راحة منتظمة، والتواصل الفعال مع الزملاء والإدارة."
+            },
+            {
+                id: 17,
+                title: "السمنة والتحكم في الوزن",
+                excerpt: "السمنة تزيد خطر الإصابة بأمراض مزمنة متعددة. اكتشف استراتيجيات صحية لإدارة الوزن.",
+                category: "nutrition",
+                date: "2025-04-20",
+                icon: "⚖️",
+                content: "إدارة الوزن الصحية تتطلب نظام غذائي متوازن، نشاط بدني منتظم، وتغيير السلوكيات طويلة المدى بدلاً من الحميات السريعة."
+            },
+            {
+                id: 18,
+                title: "صحة الكلى والوقاية من الأمراض",
+                excerpt: "الكلى تلعب دوراً حيوياً في تصفية الدم وتنظيم السوائل. تعلم كيفية الحفاظ على صحة الكلى.",
+                category: "general",
+                date: "2025-04-18",
+                icon: "🫘",
+                content: "صحة الكلى تتطلب شرب الماء الكافي، السيطرة على ضغط الدم والسكري، وتجنب الإفراط في الأدوية المسكنة."
+            },
+            {
+                id: 19,
+                title: "الذاكرة وصحة الدماغ",
+                excerpt: "الحفاظ على صحة الدماغ والذاكرة ضروري مع التقدم في العمر. اكتشف الأنشطة والعادات المفيدة.",
+                category: "mental",
+                date: "2025-04-15",
+                icon: "🧩",
+                content: "صحة الدماغ تتطلب التحدي الذهني المستمر، النشاط البدني، النوم الكافي، والتفاعل الاجتماعي المنتظم."
+            },
+            {
+                id: 20,
+                title: "أمراض القلب الوراثية",
+                excerpt: "بعض أمراض القلب لها عوامل وراثية. تعرف على الفحوصات الضرورية والتدابير الوقائية للعائلات المعرضة للخطر.",
+                category: "heart",
+                date: "2025-04-12",
+                icon: "🧬",
+                content: "التاريخ العائلي لأمراض القلب يتطلب فحوصات منتظمة، اتباع نمط حياة صحي، ومراقبة عوامل الخطر عن كثب."
+            }
+        ];
+
+        let filteredArticles = articles;
+
+        function renderArticles(articlesToRender = articles) {
+            const grid = document.getElementById('articlesGrid');
+            grid.innerHTML = '';
+
+            articlesToRender.forEach(article => {
+                const articleCard = document.createElement('div');
+                articleCard.className = 'article-card';
+                articleCard.innerHTML = `
+                    <div class="article-icon">
+                        <div class="icon">${article.icon}</div>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">${article.title}</h3>
+                        <p class="article-excerpt">${article.excerpt}</p>
+                        <div class="article-meta">
+                            <span class="article-date">${new Date(article.date).toLocaleDateString('ar-EG')}</span>
+                            <button class="read-more" onclick="openModal(${article.id})">اقرأ المزيد</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(articleCard);
+            });
+        }
+
+        function openModal(articleId) {
+            const article = articles.find(a => a.id === articleId);
+            const modal = document.getElementById('articleModal');
+            const modalContent = document.getElementById('modalContent');
+            
+            modalContent.innerHTML = `
+                <h2 style="color: #1976d2; margin-bottom: 20px;">${article.title}</h2>
+                <div style="color: #81d4fa; margin-bottom: 15px; font-size: 0.9rem;">
+                    تاريخ النشر: ${new Date(article.date).toLocaleDateString('ar-EG')}
+                </div>
+                <p style="line-height: 1.8; color: #333;">${article.content}</p>
+                <br>
+                <p style="line-height: 1.8; color: #666; font-style: italic;">
+                    هذا المقال مقدم من فريق Wellcare الطبي لأغراض التوعية الصحية. يُنصح بالتشاور مع طبيبك الخاص قبل اتخاذ أي قرارات صحية.
+                </p>
+            `;
+            
+            modal.style.display = 'block';
+        }
+
+        // إعداد الأحداث
+        document.addEventListener('DOMContentLoaded', function() {
+            renderArticles();
+
+            // البحث
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', function() {
+                const searchTerm = this.value.toLowerCase();
+                filteredArticles = articles.filter(article => 
+                    article.title.toLowerCase().includes(searchTerm) ||
+                    article.excerpt.toLowerCase().includes(searchTerm)
+                );
+                renderArticles(filteredArticles);
+            });
+
+            // التصفية حسب الفئة
+            const categoryBtns = document.querySelectorAll('.category-btn');
+            categoryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    categoryBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const category = this.dataset.category;
+                    if (category === 'all') {
+                        filteredArticles = articles;
+                    } else {
+                        filteredArticles = articles.filter(article => article.category === category);
+                    }
+                    renderArticles(filteredArticles);
+                });
+            });
+
+            // إغلاق النافذة المنبثقة
+            const modal = document.getElementById('articleModal');
+            const closeBtn = document.querySelector('.close');
+            
+            closeBtn.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+
+            window.addEventListener('click', function(event) {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

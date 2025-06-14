@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تشخيصي - استبيان أعراض ذكي</title>
+    <style>
+        :root {
+            --primary-color: #89CFF0; 
+            --secondary-color: #E0F7FA;
+            --accent-color: #00ACC1;
+            --text-color: #333333;
+            --light-text: #FFFFFF;
+            --warning-color: #FF7043;
+            --success-color: #66BB6A;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--secondary-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: var(--light-text);
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 20px;
+            background-color: var(--accent-color);
+            text-align: center;
+            line-height: 20px;
+            color: white;
+            border-radius: 20px;
+        }
+
+        .question-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .question-title {
+            color: var(--accent-color);
+            margin-bottom: 20px;
+        }
+
+        .option-group {
+            margin-bottom: 15px;
+        }
+
+        .option-label {
+            display: block;
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            font-size: 1rem;
+            user-select: none;
+        }
+
+        .option-label input {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #eee;
+            border-radius: 50%;
+            border: 2px solid var(--primary-color);
+        }
+
+        .option-label:hover input ~ .checkmark {
+            background-color: #ccc;
+        }
+
+        .option-label input:checked ~ .checkmark {
+            background-color: var(--primary-color);
+        }
+
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        .option-label input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        .option-label .checkmark:after {
+            top: 7px;
+            left: 7px;
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .severity-selector {
+            margin-left: 15px;
+            padding: 5px;
+            border-radius: 5px;
+            border: 1px solid var(--primary-color);
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--accent-color);
+            border: 1px solid var(--accent-color);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .result-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .diagnosis {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 15px;
+        }
+
+        .probability {
+            font-weight: bold;
+            color: var(--success-color);
+        }
+
+        .warning-box {
+            background-color: #FFF3E0;
+            border-left: 5px solid var(--warning-color);
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 0 5px 5px 0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .question-card {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">تشخيصي</div>
+        <p>استبيان أعراض ذكي للتشخيص المبدئي</p>
+    </header>
+
+    <div class="container">
+        <!-- شاشة البداية -->
+        <div id="welcome-screen" class="question-card">
+            <h2 class="question-title">مرحباً بك في "تشخيصي"</h2>
+            <p>سنساعدك في الحصول على تشخيص مبدئي لأعراضك من خلال بضع أسئلة بسيطة.</p>
+            <p>النتائج هي لأغراض إعلامية فقط ولا تغني عن استشارة الطبيب.</p>
+            <div class="nav-buttons">
+                <button id="start-btn" class="btn btn-primary">ابدأ الاستبيان</button>
+            </div>
+        </div>
+
+        <!-- استبيان الأعراض -->
+        <div id="questionnaire" class="hidden">
+            <div class="progress-bar">
+                <div id="progress" class="progress" style="width: 0%">0%</div>
+            </div>
+
+            <!-- القسم 1: المعلومات الأساسية -->
+            <div id="section1" class="question-card">
+                <h2 class="question-title">المعلومات الأساسية</h2>
+                
+                <div class="option-group">
+                    <h3>العمر:</h3>
+                    <label class="option-label">
+                        <input type="radio" name="age" value="child">
+                        <span class="checkmark"></span>
+                        أقل من 12 سنة
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="age" value="teen">
+                        <span class="checkmark"></span>
+                        12-18 سنة
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="age" value="young">
+                        <span class="checkmark"></span>
+                        19-40 سنة
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="age" value="middle">
+                        <span class="checkmark"></span>
+                        41-60 سنة
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="age" value="senior">
+                        <span class="checkmark"></span>
+                        فوق 60 سنة
+                    </label>
+                </div>
+
+                <div class="option-group">
+                    <h3>الجنس:</h3>
+                    <label class="option-label">
+                        <input type="radio" name="gender" value="male">
+                        <span class="checkmark"></span>
+                        ذكر
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="gender" value="female">
+                        <span class="checkmark"></span>
+                        أنثى
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="gender" value="other">
+                        <span class="checkmark"></span>
+                        أخرى/لا أرغب بالإفصاح
+                    </label>
+                </div>
+
+                <div class="nav-buttons">
+                    <button id="next1" class="btn btn-primary">التالي</button>
+                </div>
+            </div>
+
+            <!-- القسم 2: الأعراض الرئيسية -->
+            <div id="section2" class="question-card hidden">
+                <h2 class="question-title">الأعراض الرئيسية</h2>
+                
+                <div class="option-group">
+                    <h3>هل تعاني من أي من هذه الأعراض؟</h3>
+                    <label class="option-label">
+                        <input type="checkbox" name="fever">
+                        <span class="checkmark"></span>
+                        حرارة
+                        <input type="number" class="severity-selector" placeholder="درجة الحرارة" name="fever-degree" style="display: none;">
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="cough">
+                        <span class="checkmark"></span>
+                        كحة
+                        <select class="severity-selector" name="cough-type" style="display: none;">
+                            <option value="dry">جافة</option>
+                            <option value="phlegm">مصاحبة بلغم</option>
+                        </select>
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="headache">
+                        <span class="checkmark"></span>
+                        صداع
+                        <select class="severity-selector" name="headache-location" style="display: none;">
+                            <option value="forehead">في الجبهة</option>
+                            <option value="back">خلف الرأس</option>
+                            <option value="side">في جهة واحدة</option>
+                        </select>
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="fatigue">
+                        <span class="checkmark"></span>
+                        تعب عام
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="muscle-pain">
+                        <span class="checkmark"></span>
+                        آلام عضلية
+                    </label>
+                </div>
+
+                <div class="nav-buttons">
+                    <button id="prev2" class="btn btn-secondary">السابق</button>
+                    <button id="next2" class="btn btn-primary">التالي</button>
+                </div>
+            </div>
+
+            <!-- القسم 3: تفاصيل الأعراض -->
+            <div id="section3" class="question-card hidden">
+                <h2 class="question-title">تفاصيل الأعراض</h2>
+                
+                <div id="fever-details" class="option-group hidden">
+                    <h3>تفاصيل الحرارة:</h3>
+                    <label class="option-label">
+                        <input type="radio" name="fever-duration" value="1">
+                        <span class="checkmark"></span>
+                        أقل من يوم
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="fever-duration" value="2">
+                        <span class="checkmark"></span>
+                        1-2 أيام
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="fever-duration" value="3">
+                        <span class="checkmark"></span>
+                        أكثر من يومين
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="fever-shivering">
+                        <span class="checkmark"></span>
+                        صاحبها رعشة
+                    </label>
+                </div>
+
+                <div id="cough-details" class="option-group hidden">
+                    <h3>تفاصيل الكحة:</h3>
+                    <label class="option-label">
+                        <input type="radio" name="cough-duration" value="1">
+                        <span class="checkmark"></span>
+                        أقل من 3 أيام
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="cough-duration" value="2">
+                        <span class="checkmark"></span>
+                        3-7 أيام
+                    </label>
+                    <label class="option-label">
+                        <input type="radio" name="cough-duration" value="3">
+                        <span class="checkmark"></span>
+                        أكثر من أسبوع
+                    </label>
+                </div>
+
+                <div id="headache-details" class="option-group hidden">
+                    <h3>تفاصيل الصداع:</h3>
+                    <label class="option-label">
+                        <input type="checkbox" name="headache-light">
+                        <span class="checkmark"></span>
+                        يزداد مع الضوء
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="headache-sound">
+                        <span class="checkmark"></span>
+                        يزداد مع الصوت
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="headache-nausea">
+                        <span class="checkmark"></span>
+                        يصاحبه غثيان
+                    </label>
+                </div>
+
+                <div class="nav-buttons">
+                    <button id="prev3" class="btn btn-secondary">السابق</button>
+                    <button id="next3" class="btn btn-primary">التالي</button>
+                </div>
+            </div>
+
+            <!-- القسم 4: التاريخ الصحي -->
+            <div id="section4" class="question-card hidden">
+                <h2 class="question-title">التاريخ الصحي</h2>
+                
+                <div class="option-group">
+                    <h3>هل تعاني من أي من هذه الأمراض المزمنة؟</h3>
+                    <label class="option-label">
+                        <input type="checkbox" name="chronic-diabetes">
+                        <span class="checkmark"></span>
+                        سكري
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="chronic-pressure">
+                        <span class="checkmark"></span>
+                        ضغط دم
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="chronic-heart">
+                        <span class="checkmark"></span>
+                        أمراض قلب
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="chronic-asthma">
+                        <span class="checkmark"></span>
+                        ربو أو حساسية صدر
+                    </label>
+                    <label class="option-label">
+                        <input type="checkbox" name="chronic-none">
+                        <span class="checkmark"></span>
+                        لا أعاني من أمراض مزمنة
+                    </label>
+                </div>
+
+                <div class="option-group">
+                    <h3>هل تتناول أي أدوية حالياً؟</h3>
+                    <textarea name="medications" rows="3" placeholder="اذكر الأدوية التي تتناولها إن وجدت" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid var(--primary-color);"></textarea>
+                </div>
+
+                <div class="option-group">
+                    <h3>هل لديك أي حساسيات معروفة؟</h3>
+                    <textarea name="allergies" rows="2" placeholder="مثل حساسية من البنسلين أو بعض الأطعمة" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid var(--primary-color);"></textarea>
+                </div>
+
+                <div class="nav-buttons">
+                    <button id="prev4" class="btn btn-secondary">السابق</button>
+                    <button id="submit-btn" class="btn btn-primary">عرض النتائج</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- صفحة النتائج -->
+        <div id="results-screen" class="hidden">
+            <div class="result-card">
+                <h2 class="question-title">نتائج التشخيص المبدئي</h2>
+                <div class="diagnosis">
+                    التشخيص المحتمل: <span id="diagnosis-result">نزلة برد</span>
+                    <span class="probability">(احتمالية <span id="probability-value">75%</span>)</span>
+                </div>
+                
+                <div id="result-description">
+                    <p>بناءً على الأعراض التي ذكرتها، من المحتمل أنك تعاني من نزلة برد عادية. الأعراض التي ذكرتها (كحة، احتقان) تتوافق مع فيروس البرد الشائع.</p>
+                </div>
+            </div>
+
+            <div class="result-card">
+                <h3>نصائح العناية المنزلية</h3>
+                <ul id="care-advice">
+                    <li>احصل على قسط وافر من الراحة</li>
+                    <li>اشرب الكثير من السوائل الدافئة</li>
+                    <li>يمكنك استخدام بخاخ محلول ملحي للأنف لتخفيف الاحتقان</li>
+                    <li>يمكن تناول باراسيتامول أو إيبوبروفين لتخفيف الألم أو الحرارة</li>
+                </ul>
+            </div>
+
+            <div class="warning-box">
+                <h3>متى يجب مراجعة الطبيب؟</h3>
+                <ul id="warning-signs">
+                    <li>إذا استمرت الحرارة فوق 38.5°C لأكثر من 3 أيام</li>
+                    <li>إذا ظهر ضيق في التنفس أو ألم في الصدر</li>
+                    <li>إذا ساءت الأعراض بعد تحسنها</li>
+                    <li>إذا ظهر طفح جلدي</li>
+                </ul>
+            </div>
+
+            <div class="nav-buttons">
+                <button id="restart-btn" class="btn btn-primary">إعادة الاستبيان</button>
+                <button id="doctor-btn" class="btn btn-secondary">بحث عن أطباء قريبين</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // متغيرات التتبع
+        let currentSection = 0;
+        const sections = ['welcome-screen', 'section1', 'section2', 'section3', 'section4'];
+        const totalSections = 4; // بدون شاشة البداية
+
+        // عناصر DOM
+        const startBtn = document.getElementById('start-btn');
+        const questionnaire = document.getElementById('questionnaire');
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const progressBar = document.getElementById('progress');
+        const resultsScreen = document.getElementById('results-screen');
+
+        // أزرار التنقل
+        const next1 = document.getElementById('next1');
+        const next2 = document.getElementById('next2');
+        const next3 = document.getElementById('next3');
+        const prev2 = document.getElementById('prev2');
+        const prev3 = document.getElementById('prev3');
+        const prev4 = document.getElementById('prev4');
+        const submitBtn = document.getElementById('submit-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const doctorBtn = document.getElementById('doctor-btn');
+
+        // تفعيل العناصر التفاعلية
+        startBtn.addEventListener('click', () => {
+            welcomeScreen.classList.add('hidden');
+            questionnaire.classList.remove('hidden');
+            showSection(1);
+            updateProgress(1);
+        });
+
+        next1.addEventListener('click', () => {
+            if (validateSection(1)) {
+                showSection(2);
+                updateProgress(2);
+            }
+        });
+
+        next2.addEventListener('click', () => {
+            if (validateSection(2)) {
+                showSection(3);
+                updateProgress(3);
+                showRelevantDetails();
+            }
+        });
+
+        next3.addEventListener('click', () => {
+            if (validateSection(3)) {
+                showSection(4);
+                updateProgress(4);
+            }
+        });
+
+        prev2.addEventListener('click', () => {
+            showSection(1);
+            updateProgress(1);
+        });
+
+        prev3.addEventListener('click', () => {
+            showSection(2);
+            updateProgress(2);
+        });
+
+        prev4.addEventListener('click', () => {
+            showSection(3);
+            updateProgress(3);
+        });
+
+        submitBtn.addEventListener('click', () => {
+            if (validateSection(4)) {
+                questionnaire.classList.add('hidden');
+                resultsScreen.classList.remove('hidden');
+                analyzeSymptoms();
+            }
+        });
+
+        restartBtn.addEventListener('click', () => {
+            location.reload();
+        });
+
+        doctorBtn.addEventListener('click', () => {
+            alert("هذه الميزة تتطلب اتصال بقاعدة بيانات الأطباء. يمكن تطويرها لاحقًا.");
+        });
+
+        // تفعيل العناصر الشرطية
+        document.querySelectorAll('input[name="fever"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const feverDegree = document.querySelector('input[name="fever-degree"]');
+                feverDegree.style.display = this.checked ? 'inline-block' : 'none';
+            });
+        });
+
+        document.querySelectorAll('input[name="cough"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const coughType = document.querySelector('select[name="cough-type"]');
+                coughType.style.display = this.checked ? 'inline-block' : 'none';
+            });
+        });
+
+        document.querySelectorAll('input[name="headache"]').forEach(input => {
+            input.addEventListener('change', function() {
+                const headacheLocation = document.querySelector('select[name="headache-location"]');
+                headacheLocation.style.display = this.checked ? 'inline-block' : 'none';
+            });
+        });
+
+        // الدوال المساعدة
+        function showSection(sectionNum) {
+            document.querySelectorAll('.question-card').forEach(section => {
+                section.classList.add('hidden');
+            });
+            document.getElementById(`section${sectionNum}`).classList.remove('hidden');
+            currentSection = sectionNum;
+        }
+
+        function updateProgress(sectionNum) {
+            const progressPercent = (sectionNum / totalSections) * 100;
+            progressBar.style.width = `${progressPercent}%`;
+            progressBar.textContent = `${Math.round(progressPercent)}%`;
+        }
+
+        function validateSection(sectionNum) {
+            // يمكن إضافة التحقق من صحة الإجابات هنا
+            return true;
+        }
+
+        function showRelevantDetails() {
+            // إظهار الأسئلة التفصيلية حسب الأعراض المختارة
+            const feverDetails = document.getElementById('fever-details');
+            const coughDetails = document.getElementById('cough-details');
+            const headacheDetails = document.getElementById('headache-details');
+
+            feverDetails.classList.add('hidden');
+            coughDetails.classList.add('hidden');
+            headacheDetails.classList.add('hidden');
+
+            if (document.querySelector('input[name="fever"]:checked')) {
+                feverDetails.classList.remove('hidden');
+            }
+            if (document.querySelector('input[name="cough"]:checked')) {
+                coughDetails.classList.remove('hidden');
+            }
+            if (document.querySelector('input[name="headache"]:checked')) {
+                headacheDetails.classList.remove('hidden');
+            }
+        }
+
+        function analyzeSymptoms() {
+            // تحليل بسيط للأعراض (يمكن تطويره ليكون أكثر ذكاء)
+            const hasFever = document.querySelector('input[name="fever"]:checked');
+            const hasCough = document.querySelector('input[name="cough"]:checked');
+            const hasHeadache = document.querySelector('input[name="headache"]:checked');
+            const hasMusclePain = document.querySelector('input[name="muscle-pain"]:checked');
+            const hasFatigue = document.querySelector('input[name="fatigue"]:checked');
+
+            let diagnosis = '';
+            let probability = '';
+            let description = '';
+            let advice = [];
+            let warnings = [];
+
+            if (hasFever && hasCough && hasMusclePain) {
+                diagnosis = 'إنفلونزا';
+                probability = '70%';
+                description = 'الأعراض التي ذكرتها (حرارة، كحة، آلام عضلية) تشير إلى احتمال الإصابة بالإنفلونزا.';
+                advice = [
+                    'الراحة التامة في المنزل',
+                    'شرب الكثير من السوائل',
+                    'استخدام خافضات الحرارة مثل باراسيتامول أو إيبوبروفين',
+                    'تجنب الاختلاط بالآخرين لمنع انتشار العدوى'
+                ];
+                warnings = [
+                    'إذا كانت الحرارة فوق 39°C لأكثر من يومين',
+                    'إذا ظهر ضيق تنفس أو ألم في الصدر',
+                    'إذا شعرت بدوار أو ارتباك'
+                ];
+            } else if (hasCough && !hasFever) {
+                diagnosis = 'نزلة برد';
+                probability = '85%';
+                description = 'الأعراض التي ذكرتها (كحة بدون حرارة) تشير إلى نزلة برد عادية.';
+                advice = [
+                    'استنشاق بخار الماء لتخفيف الاحتقان',
+                    'شرب سوائل دافئة مثل الشوربة أو الشاي',
+                    'يمكن استخدام أقراص استحلاب للحلق',
+                    'الراحة قدر الإمكان'
+                ];
+                warnings = [
+                    'إذا استمرت الأعراض أكثر من 10 أيام',
+                    'إذا ظهرت حرارة لاحقاً',
+                    'إذا أصبح البلغم أخضر أو مصحوباً بدم'
+                ];
+            } else if (hasHeadache && !hasFever && !hasCough) {
+                diagnosis = 'صداع توتر';
+                probability = '65%';
+                description = 'الصداع الذي تعاني منه قد يكون بسبب التوتر أو الإجهاد.';
+                advice = [
+                    'أخذ قسط من الراحة في مكان هادئ',
+                    'تدليك منطقة الرقبة والكتفين',
+                    'يمكن استخدام مسكنات الألم مثل باراسيتامول',
+                    'ممارسة تمارين الاسترخاء'
+                ];
+                warnings = [
+                    'إذا كان الصداع شديداً جداً ومفاجئاً',
+                    'إذا صاحب الصداع تشوش في الرؤية أو قيء',
+                    'إذا استمر الصداع أكثر من يومين دون تحسن'
+                ];
+            } else {
+                diagnosis = 'تعب عام';
+                probability = '60%';
+                description = 'الأعراض التي ذكرتها قد تكون بسبب الإجهاد أو التعب العام.';
+                advice = [
+                    'الحصول على قسط كاف من النوم',
+                    'تناول وجبات متوازنة',
+                    'ممارسة بعض التمارين الخفيفة',
+                    'تقليل التوتر والإجهاد'
+                ];
+                warnings = [
+                    'إذا استمر التعب أكثر من أسبوعين',
+                    'إذا صاحب التعب فقدان وزن غير مبرر',
+                    'إذا ظهرت أي أعراض جديدة'
+                ];
+            }
+
+            // عرض النتائج
+            document.getElementById('diagnosis-result').textContent = diagnosis;
+            document.getElementById('probability-value').textContent = probability;
+            document.getElementById('result-description').innerHTML = `<p>${description}</p>`;
+            
+            const adviceList = document.getElementById('care-advice');
+            adviceList.innerHTML = '';
+            advice.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                adviceList.appendChild(li);
+            });
+            
+            const warningList = document.getElementById('warning-signs');
+            warningList.innerHTML = '';
+            warnings.forEach(item => {
+                const li = document.createElement('li');
+                li.textContent = item;
+                warningList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>

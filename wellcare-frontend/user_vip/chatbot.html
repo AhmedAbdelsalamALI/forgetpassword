@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> "تحدث مع WellCare – نصيحة طبية فورية"</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Header Styles */
+        .chatbot-header {
+            background-color: #89cff0;
+            color: white;
+            padding: 16px 24px;
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Messages Container */
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            scroll-behavior: smooth;
+        }
+        
+        .bot-message,
+        .user-message {
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 12px;
+            max-width: 80%;
+            line-height: 1.6;
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .bot-message {
+            background: #e0f7fa;
+            align-self: flex-start;
+            border-top-left-radius: 4px;
+        }
+        
+        .user-message {
+            background: #caffbf;
+            align-self: flex-end;
+            border-top-right-radius: 4px;
+        }
+        
+        /* Input Area */
+        .chatbot-input {
+            display: flex;
+            border-top: 1px solid #ddd;
+            padding: 16px;
+            background: #fff;
+        }
+        
+        .chatbot-input input {
+            flex: 1;
+            border: 1px solid #ddd;
+            padding: 12px 16px;
+            font-size: 16px;
+            border-radius: 8px;
+            outline: none;
+            transition: border 0.3s;
+        }
+        
+        .chatbot-input input:focus {
+            border-color: #402aeb;
+        }
+        
+        .chatbot-input button {
+            background: #0a9396;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            margin-right: 12px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .chatbot-input button:hover {
+            background: #098080;
+        }
+        
+        /* Scrollbar styling */
+        .chatbot-messages::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .chatbot-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        .chatbot-messages::-webkit-scrollbar-thumb {
+            background: #0a9396;
+            border-radius: 4px;
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Loading indicator */
+        .typing-indicator {
+            display: inline-block;
+            padding: 12px 16px;
+            background: #e0f7fa;
+            border-radius: 12px;
+            align-self: flex-start;
+        }
+        
+        .typing-indicator span {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #0a9396;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+        
+        .typing-indicator span:nth-child(1) {
+            animation-delay: 0s;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+        
+        /* Welcome message */
+        .welcome-message {
+            text-align: center;
+            padding: 20px;
+            background: #e0f7fa;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #0a9396;
+        }
+        
+        .welcome-message h3 {
+            color: #0a9396;
+            margin-bottom: 10px;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .bot-message,
+            .user-message {
+                max-width: 90%;
+                padding: 10px 14px;
+            }
+            
+            .chatbot-header {
+                font-size: 18px;
+                padding: 12px 16px;
+            }
+            
+            .chatbot-input {
+                padding: 12px;
+            }
+            
+            .chatbot-input input {
+                padding: 10px 14px;
+                font-size: 14px;
+            }
+            
+            .chatbot-input button {
+                padding: 0 16px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="chatbot-header">
+        <span> "تحدث مع WellCare – نصيحة طبية فورية "</span>
+    </div>
+    
+    <!-- Messages Container -->
+    <div id="chatbot-messages" class="chatbot-messages" role="log" aria-live="polite">
+        <div class="welcome-message">
+            <h3>مرحباً بك في المساعد الطبي الذكي</h3>
+            <p>يمكنك طرح أي استفسار طبي وسأحاول مساعدتك. تذكر أن هذه المعلومات لا تغني عن استشارة الطبيب.</p>
+        </div>
+    </div>
+    
+    <!-- Input Area -->
+    <div class="chatbot-input">
+        <input type="text" id="chatbot-input" placeholder="اكتب سؤالك الطبي هنا..." aria-label="حقل إدخال السؤال الطبي" />
+        <button id="send-message" aria-label="إرسال السؤال"><i class="fas fa-paper-plane"></i> إرسال</button>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const sendButton = document.getElementById("send-message");
+            const inputField = document.getElementById("chatbot-input");
+            const messagesContainer = document.getElementById("chatbot-messages");
+            
+            // Add welcome message
+            setTimeout(() => {
+                addMessage("مرحباً! أنا المساعد الطبي الذكي. كيف يمكنني مساعدتك اليوم؟", "bot-message");
+            }, 500);
+            
+            // Send message on button click or Enter key
+            sendButton.addEventListener("click", sendMessage);
+            inputField.addEventListener("keypress", function(event) {
+                if (event.key === "Enter") sendMessage();
+            });
+            
+            function sendMessage() {
+                const message = inputField.value.trim();
+                if (message === "") return;
+                
+                addMessage(message, "user-message");
+                inputField.value = "";
+                
+                // Show typing indicator
+                const typingIndicator = document.createElement("div");
+                typingIndicator.className = "typing-indicator";
+                typingIndicator.innerHTML = '<span></span><span></span><span></span>';
+                messagesContainer.appendChild(typingIndicator);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                
+                // Fetch response after a short delay to simulate thinking
+                setTimeout(() => {
+                    messagesContainer.removeChild(typingIndicator);
+                    fetchMedicalResponse(message);
+                }, 1000);
+            }
+            
+            function addMessage(text, className) {
+                const messageDiv = document.createElement("div");
+                messageDiv.className = className;
+                messageDiv.innerText = text;
+                messagesContainer.appendChild(messageDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            function fetchMedicalResponse(userInput) {
+                const API_KEY = "AIzaSyDM-oLNiv4OZkPgM5MyyQ3Zni_CYFVB1kk";
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
+                
+                // Medical disclaimer in Arabic
+                const disclaimer = "\n\n⚠️ تنبيه: هذا الرد مقدم من أداة ذكاء اصطناعي ولا يُغني عن استشارة الطبيب المختص. لا تستخدم المعلومات المقدمة كتشخيص طبي دقيق.";
+                
+                const requestData = {
+                    contents: [{
+                        parts: [{
+                            text: `أنت مساعد طبي ذكي متخصص. أجب فقط على الأسئلة المتعلقة بالصحة، الأمراض، الأدوية أو العلاج. 
+                            قدم إجابات واضحة ودقيقة بلغة عربية سليمة. إذا كان السؤال خارج النطاق الطبي، قل: 
+                            "❌ هذا الشات مخصص فقط للأسئلة الطبية والصحية."
+                            
+                            السؤال: ${userInput}
+                            
+                            أضف التحذير التالي في نهاية كل إجابة: ${disclaimer}`
+                        }]
+                    }]
+                };
+                
+                fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(requestData)
+                })
+                .then(response => {
+                    if (!response.ok) throw new Error("Network response was not ok");
+                    return response.json();
+                })
+                .then(data => {
+                    if (data?.candidates?.[0]?.content?.parts?.[0]?.text) {
+                        const botReply = data.candidates[0].content.parts[0].text;
+                        addMessage(botReply, "bot-message");
+                    } else {
+                        addMessage("❌ لم أتمكن من معالجة سؤالك. يرجى صياغة السؤال بطريقة أخرى أو المحاولة لاحقًا." + disclaimer, "bot-message");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    addMessage("❌ حدث خطأ في الاتصال. يرجى المحاولة مرة أخرى لاحقًا." + disclaimer, "bot-message");
+                });
+            }
+        });
+    </script>
+</body>
+</html>

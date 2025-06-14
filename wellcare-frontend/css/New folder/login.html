@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل دخول</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="css/style1.css">
+  
+  <!-- إضافة SDK لفيسبوك وجوجل -->
+  <script async defer crossorigin="anonymous" src="https://connect.facebook.net/ar_AR/sdk.js#xfbml=1&version=v16.0&appId=YOUR_APP_ID&autoLogAppEvents=1" nonce="YOUR_NONCE"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+
+  <style>
+    /* تحسين التنسيق */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #c5e5ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-container {
+      background-color: #4b82d3;
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h1 {
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #fffcfc;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+      position: relative;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      padding-left: 35px;
+      font-size: 16px;
+      border: 1px solid #ffffff;
+      border-radius: 5px;
+      background-color: #ffffff;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #1100ff;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #83aff6;
+      color: rgb(6, 6, 6);
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .btn:hover {
+      background-color: #0f2dc5;
+    }
+
+    .error-message {
+      display: none;
+      color: red;
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .links a {
+      color: #050505;
+      text-decoration: none;
+      margin: 5px;
+    }
+
+    .social-btns {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 12px;
+      border-radius: 5px;
+      margin: 10px 0;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .facebook {
+      background-color: #474381;
+      color: white;
+    }
+
+    .facebook:hover {
+      background-color: #4235f3;
+    }
+
+    .google {
+      background-color: #db4437;
+      color: white;
+    }
+
+    .google:hover {
+      background-color: #4235f3;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>مرحبًا بك من جديد!</h1>
+    <p>أدخل بياناتك لتسجيل الدخول</p>
+    
+    <!-- عرض رسائل الخطأ -->
+    <?php if (isset($_GET['error'])): ?>
+    <div class="error-message" style="display: block;">
+      <?php echo htmlspecialchars($_GET['error']); ?>
+    </div>
+    <?php endif; ?>
+
+    <form id="loginForm" action="login.php" method="POST">
+      <div class="input-group">
+        <i class="fas fa-user"></i>
+        <input type="text" id="username" name="username" placeholder="اسم المستخدم" required>
+      </div>
+      <div class="input-group">
+        <i class="fas fa-lock"></i>
+        <input type="password" id="password" name="password" placeholder="كلمة المرور" required>
+      </div>
+      <button type="submit" class="btn">تسجيل الدخول</button>
+      <div class="links">
+        <a href="forgetpassword.html">نسيت كلمة المرور؟</a>
+        <a href="register.html">إنشاء حساب جديد</a>
+      </div>
+    </form>
+
+    <!-- أزرار التواصل الاجتماعي -->
+    <div class="social-btns">
+      <button class="social-btn facebook">
+        <i class="fab fa-facebook"></i> تسجيل الدخول بفيسبوك
+      </button>
+      <button class="social-btn google">
+        <i class="fab fa-google"></i> تسجيل الدخول بجوجل
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // معالجة رسائل الخطأ من URL
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+        
+        if (error) {
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.textContent = error;
+            errorElement.style.display = 'block';
+            
+            const form = document.getElementById('loginForm');
+            form.parentNode.insertBefore(errorElement, form.nextSibling);
+        }
+    });
+  </script>
+</body>
+</html>

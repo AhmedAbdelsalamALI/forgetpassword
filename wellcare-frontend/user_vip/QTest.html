@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار المعلومات الطبية</title>
+    <style>
+        :root {
+            --baby-blue: #89CFF0;
+            --dark-blue: #1E3A8A;
+            --light-gray: #F8F9FA;
+            --correct: #4CAF50;
+            --wrong: #F44336;
+        }
+        
+        body {
+            font-family: 'Tajawal', Arial, sans-serif;
+            background-color: #f5f9ff;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--baby-blue);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .quiz-container {
+            background-color: white;
+            border-radius: 0 0 10px 10px;
+            padding: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: var(--baby-blue);
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .question {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .options {
+            margin-bottom: 30px;
+        }
+        
+        .option {
+            background-color: var(--light-gray);
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        
+        .option:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .option.selected {
+            border-color: var(--baby-blue);
+            background-color: #e6f2ff;
+        }
+        
+        .option.correct {
+            background-color: var(--correct);
+            color: white;
+        }
+        
+        .option.wrong {
+            background-color: var(--wrong);
+            color: white;
+        }
+        
+        .feedback {
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .correct-feedback {
+            background-color: #e8f5e9;
+            border-left: 5px solid var(--correct);
+        }
+        
+        .wrong-feedback {
+            background-color: #ffebee;
+            border-left: 5px solid var(--wrong);
+        }
+        
+        .next-btn {
+            background-color: var(--baby-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            display: block;
+            margin: 20px auto 0;
+            transition: background-color 0.3s;
+        }
+        
+        .next-btn:hover {
+            background-color: var(--dark-blue);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .results-container {
+            text-align: center;
+            padding: 30px;
+        }
+        
+        .score {
+            font-size: 2em;
+            color: var(--dark-blue);
+            margin: 20px 0;
+        }
+        
+        .restart-btn {
+            background-color: var(--baby-blue);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-top: 20px;
+            transition: background-color 0.3s;
+        }
+        
+        .restart-btn:hover {
+            background-color: var(--dark-blue);
+        }
+        
+        .timer {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 10px 0;
+            color: var(--dark-blue);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .quiz-container {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>اختبار المعلومات الطبية</h1>
+            <p>اختبر معرفتك الطبية في هذا الاختبار التفاعلي</p>
+        </header>
+        
+        <div class="quiz-container">
+            <div id="start-screen">
+                <h2>مرحباً بك في الاختبار الطبي</h2>
+                <p>يتكون الاختبار من 10 أسئلة طبية متنوعة. حاول الإجابة بشكل صحيح في أقصر وقت ممكن!</p>
+                <button id="start-btn" class="next-btn">ابدأ الاختبار</button>
+            </div>
+            
+            <div id="quiz-screen" class="hidden">
+                <div class="timer">
+                    الوقت: <span id="time">00:00</span>
+                </div>
+                
+                <div class="progress-container">
+                    <div id="progress-bar" class="progress-bar"></div>
+                </div>
+                
+                <div id="question" class="question"></div>
+                
+                <div id="options" class="options"></div>
+                
+                <div id="feedback" class="feedback"></div>
+                
+                <button id="next-btn" class="next-btn hidden">التالي</button>
+            </div>
+            
+            <div id="results-screen" class="hidden">
+                <div class="results-container">
+                    <h2>أحسنت! لقد أكملت الاختبار</h2>
+                    <div class="score">درجتك: <span id="final-score">0</span>/10</div>
+                    <p id="result-message"></p>
+                    <button id="restart-btn" class="restart-btn">إعادة الاختبار</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // الأسئلة والمعلومات
+        const questions = [
+            {
+                question: "ما هو العضو المسؤول عن إنتاج الأنسولين في الجسم؟",
+                options: ["الكبد", "البنكرياس", "الطحال", "الكلى"],
+                answer: 1,
+                explanation: "البنكرياس هو العضو المسؤول عن إنتاج الأنسولين عبر خلايا بيتا في جزر لانغرهانس."
+            },
+            {
+                question: "أي من هذه الأدوية ينتمي إلى فئة حاصرات بيتا؟",
+                options: ["أموكسيسيلين", "باراسيتامول", "بروبرانولول", "أوميبرازول"],
+                answer: 2,
+                explanation: "بروبرانولول هو دواء ينتمي إلى فئة حاصرات بيتا التي تستخدم لعلاج ارتفاع ضغط الدم وأمراض القلب."
+            },
+            {
+                question: "ما هي القيمة الطبيعية لضغط الدم عند الإنسان البالغ؟",
+                options: ["100/60 مم زئبق", "120/80 مم زئبق", "140/90 مم زئبق", "160/100 مم زئبق"],
+                answer: 1,
+                explanation: "القيمة الطبيعية لضغط الدم هي حوالي 120/80 مم زئبق. تعتبر القراءة 140/90 أو أعلى ارتفاعاً في ضغط الدم."
+            },
+            {
+                question: "أي من هذه الأعراض ليس من أعراض التهاب الزائدة الدودية؟",
+                options: ["ألم في الربع البطني السفلي الأيمن", "غثيان وقيء", "حمى خفيفة", "صداع شديد"],
+                answer: 3,
+                explanation: "الصداع الشديد ليس من الأعراض النموذجية لالتهاب الزائدة الدودية. الأعراض الرئيسية تشمل ألم في الربع البطني السفلي الأيمن وغثيان وقيء وحمى خفيفة."
+            },
+            {
+                question: "ما هو الفيتامين الذي ينتجه الجسم عند التعرض لأشعة الشمس؟",
+                options: ["فيتامين أ", "فيتامين ب12", "فيتامين ج", "فيتامين د"],
+                answer: 3,
+                explanation: "فيتامين د هو الفيتامين الذي ينتجه الجلد عند التعرض لأشعة الشمس فوق البنفسجية."
+            }
+        ];
+
+        // متغيرات التطبيق
+        let currentQuestion = 0;
+        let score = 0;
+        let time = 0;
+        let timerInterval;
+        let selectedOption = null;
+
+        // عناصر DOM
+        const startScreen = document.getElementById('start-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const questionElement = document.getElementById('question');
+        const optionsElement = document.getElementById('options');
+        const feedbackElement = document.getElementById('feedback');
+        const progressBar = document.getElementById('progress-bar');
+        const timeElement = document.getElementById('time');
+        const finalScoreElement = document.getElementById('final-score');
+        const resultMessageElement = document.getElementById('result-message');
+
+        // بدء الاختبار
+        startBtn.addEventListener('click', startQuiz);
+        nextBtn.addEventListener('click', nextQuestion);
+        restartBtn.addEventListener('click', restartQuiz);
+
+        // وظائف التطبيق
+        function startQuiz() {
+            startScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            
+            startTimer();
+            showQuestion();
+        }
+
+        function startTimer() {
+            time = 0;
+            updateTimerDisplay();
+            timerInterval = setInterval(() => {
+                time++;
+                updateTimerDisplay();
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = Math.floor(time / 60);
+            const seconds = time % 60;
+            timeElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            questionElement.textContent = question.question;
+            
+            optionsElement.innerHTML = '';
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.classList.add('option');
+                optionElement.textContent = option;
+                optionElement.dataset.index = index;
+                optionElement.addEventListener('click', selectOption);
+                optionsElement.appendChild(optionElement);
+            });
+            
+            feedbackElement.classList.add('hidden');
+            feedbackElement.innerHTML = '';
+            nextBtn.classList.add('hidden');
+            
+            // تحديث شريط التقدم
+            const progress = ((currentQuestion) / questions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+        }
+
+        function selectOption(e) {
+            if (nextBtn.classList.contains('hidden')) {
+                const selectedIndex = parseInt(e.target.dataset.index);
+                const question = questions[currentQuestion];
+                
+                // إزالة التحديد السابق
+                if (selectedOption !== null) {
+                    const prevOption = optionsElement.children[selectedOption];
+                    prevOption.classList.remove('selected');
+                }
+                
+                // تحديد الخيار الجديد
+                selectedOption = selectedIndex;
+                e.target.classList.add('selected');
+                
+                // التحقق من الإجابة
+                const isCorrect = selectedIndex === question.answer;
+                
+                // تلوين الإجابات
+                question.options.forEach((_, index) => {
+                    const option = optionsElement.children[index];
+                    if (index === question.answer) {
+                        option.classList.add('correct');
+                    } else if (index === selectedIndex && !isCorrect) {
+                        option.classList.add('wrong');
+                    }
+                });
+                
+                // عرض التغذية الراجعة
+                feedbackElement.innerHTML = `
+                    <p><strong>${isCorrect ? 'إجابة صحيحة!' : 'إجابة خاطئة!'}</strong></p>
+                    <p>${question.explanation}</p>
+                `;
+                
+                feedbackElement.classList.remove('hidden');
+                feedbackElement.classList.add(isCorrect ? 'correct-feedback' : 'wrong-feedback');
+                
+                // تحديث النتيجة
+                if (isCorrect) {
+                    score++;
+                }
+                
+                // إظهار زر التالي
+                nextBtn.classList.remove('hidden');
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            selectedOption = null;
+            
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                endQuiz();
+            }
+        }
+
+        function endQuiz() {
+            clearInterval(timerInterval);
+            quizScreen.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+            
+            finalScoreElement.textContent = score;
+            
+            // رسالة النتيجة
+            const percentage = (score / questions.length) * 100;
+            let message;
+            
+            if (percentage >= 80) {
+                message = "ممتاز! لديك معرفة طبية ممتازة.";
+            } else if (percentage >= 60) {
+                message = "جيد جداً! لديك معرفة طبية جيدة ولكن هناك مجال للتحسين.";
+            } else if (percentage >= 40) {
+                message = "ليس سيئاً! ننصحك بمراجعة بعض الأساسيات الطبية.";
+            } else {
+                message = "يبدو أنك بحاجة لدراسة المزيد من المعلومات الطبية الأساسية.";
+            }
+            
+            resultMessageElement.textContent = message;
+        }
+
+        function restartQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            selectedOption = null;
+            
+            resultsScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            
+            startTimer();
+            showQuestion();
+        }
+    </script>
+</body>
+</html>

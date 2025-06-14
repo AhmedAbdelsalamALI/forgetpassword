@@ -1,0 +1,1902 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الألعاب الصحية المتطورة - موقعك الطبي</title>
+    <style>
+        :root {
+            --primary: #89cff0;
+            --primary-dark: #1b2a9d;
+            --secondary: #FF9800;
+            --secondary-dark: #F57C00;
+            --light: #F1F8E9;
+            --dark: #292cb6;
+            --danger: #F44336;
+            --white: #FFFFFF;
+            --gray: #E0E0E0;
+            --blue: #2196F3;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--light);
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 0 0 20px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--secondary), var(--blue), var(--primary));
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .difficulty-selector {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .difficulty-btn {
+            padding: 8px 15px;
+            margin: 0 5px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        .difficulty-btn.easy {
+            background-color: #C8E6C9;
+            color: var(--dark);
+        }
+        
+        .difficulty-btn.medium {
+            background-color: #FFECB3;
+            color: #FF8F00;
+        }
+        
+        .difficulty-btn.hard {
+            background-color: #FFCDD2;
+            color: var(--danger);
+        }
+        
+        .difficulty-btn.active {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .game-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            position: relative;
+            border: 3px solid transparent;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .game-card.featured {
+            border-color: var(--secondary);
+            position: relative;
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: var(--secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            z-index: 1;
+        }
+        
+        .game-image {
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .game-image::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+        }
+        
+        .game-level {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            z-index: 1;
+        }
+        
+        .game-content {
+            padding: 20px;
+        }
+        
+        .game-title {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+        
+        .game-desc {
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.95rem;
+        }
+        
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+        
+        .game-meta span {
+            display: flex;
+            align-items: center;
+        }
+        
+        .game-meta i {
+            margin-left: 5px;
+        }
+        
+        .game-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        
+        .game-modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: var(--white);
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--danger);
+            background: none;
+            border: none;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        
+        .close-modal:hover {
+            background: rgba(244, 67, 54, 0.1);
+        }
+        
+        .game-container {
+            margin-top: 20px;
+        }
+        
+        /* ستايلات الألعاب الفردية */
+        /* لعبة التغذية الصحية */
+        .nutrition-game .food-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .food-card {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            background: var(--white);
+        }
+        
+        .food-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+        
+        .food-image {
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .food-name {
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            border-top: 2px solid var(--light);
+        }
+        
+        .nutrition-feedback {
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .feedback-correct {
+            background: #E8F5E9;
+            border-left: 5px solid var(--primary);
+        }
+        
+        .feedback-wrong {
+            background: #FFEBEE;
+            border-left: 5px solid var(--danger);
+        }
+        
+        .feedback-title {
+            font-weight: bold;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .feedback-title i {
+            margin-left: 5px;
+        }
+        
+        .health-benefits {
+            margin-top: 10px;
+            padding: 10px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 5px;
+        }
+        
+        .health-benefits h4 {
+            color: var(--primary-dark);
+            margin-bottom: 5px;
+        }
+        
+        .health-benefits ul {
+            padding-right: 15px;
+        }
+        
+        .health-benefits li {
+            margin-bottom: 5px;
+        }
+        
+        /* لعبة السلم الصحي */
+        .ladder-game {
+            text-align: center;
+        }
+        
+        .ladder-container {
+            position: relative;
+            height: 400px;
+            margin: 30px auto;
+            
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .player {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: bottom 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16);
+        }
+        
+        .question-container {
+            background-color: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 2px solid var(--primary);
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: var(--dark);
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .option {
+            padding: 12px;
+            background-color: var(--white);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid var(--gray);
+            text-align: right;
+        }
+        
+        .option:hover {
+            border-color: var(--primary);
+        }
+        
+        .option.correct {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+        
+        .option.incorrect {
+            background-color: var(--danger);
+            color: var(--white);
+            border-color: var(--danger);
+        }
+        
+        .health-fact {
+            margin-top: 15px;
+            padding: 10px;
+            background: #E3F2FD;
+            border-radius: 5px;
+            border-right: 4px solid var(--blue);
+            display: none;
+        }
+        
+        .health-fact h4 {
+            color: var(--blue);
+            margin-bottom: 5px;
+        }
+        
+        /* شهادة الإنجاز */
+        .certificate {
+            background: white;
+            border: 15px solid #FFEB3B;
+            padding: 30px;
+            text-align: center;
+            max-width: 600px;
+            margin: 20px auto;
+            display: none;
+        }
+        
+        .certificate h2 {
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            font-size: 2rem;
+        }
+        
+        .certificate h3 {
+            color: var(--secondary-dark);
+            margin: 20px 0;
+        }
+        
+        .certificate p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+        }
+        
+        .certificate .score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .download-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+        
+        .download-btn:hover {
+            background: var(--primary-dark);
+        }
+        
+        /* لوحة المتصدرين */
+        .leaderboard {
+            margin: 30px auto;
+            max-width: 500px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            display: none;
+        }
+        
+        .leaderboard h3 {
+            text-align: center;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--light);
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid var(--gray);
+        }
+        
+        .leaderboard-item:nth-child(1) .rank {
+            background: #FFD700;
+            color: #000;
+        }
+        
+        .leaderboard-item:nth-child(2) .rank {
+            background: #C0C0C0;
+            color: #000;
+        }
+        
+        .leaderboard-item:nth-child(3) .rank {
+            background: #CD7F32;
+            color: #000;
+        }
+        
+        .rank {
+            width: 25px;
+            height: 25px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .player-name {
+            flex-grow: 1;
+            text-align: right;
+            padding: 0 15px;
+        }
+        
+        .player-score {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        /* لعبة صيد الفواكه */
+        .fruit-game {
+            position: relative;
+            height: 500px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #B3E5FC, #81D4FA);
+        }
+        
+        .game-ui {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 10;
+        }
+        
+        .ui-box {
+            background: rgba(255,255,255,0.8);
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .basket {
+            position: absolute;
+            width: 100px;
+            height: 60px;
+            background-image: url('https://cdn.pixabay.com/photo/2017/03/31/17/37/basket-2192018_640.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+            transition: left 0.2s;
+        }
+        
+        .fruit {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            top: -60px;
+            z-index: 2;
+            transition: top 0.1s linear;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            z-index: 20;
+            display: none;
+        }
+        
+        .game-over h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: var(--secondary);
+        }
+        
+        .final-stats {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+            max-width: 80%;
+        }
+        
+        .final-stats p {
+            margin: 10px 0;
+        }
+        
+        .highlight {
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .health-tip {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            max-width: 80%;
+            border-right: 5px solid var(--secondary);
+        }
+        
+        .health-tip h4 {
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+        
+        .restart-btn {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .restart-btn:hover {
+            background: var(--secondary-dark);
+        }
+        
+        /* رسومات متحركة */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .nutrition-game .food-options {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .modal-content {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="floating">الألعاب الصحية المتطورة</h1>
+            <p class="subtitle">تعلم مبادئ الصحة والعافية بطريقة تفاعلية ممتعة</p>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="difficulty-selector">
+            <h3>اختر مستوى الصعوبة:</h3>
+            <button class="difficulty-btn easy active" data-level="easy">سهل</button>
+            <button class="difficulty-btn medium" data-level="medium">متوسط</button>
+            <button class="difficulty-btn hard" data-level="hard">صعب</button>
+        </div>
+        
+        <div class="games-grid">
+            <!-- لعبة التغذية الصحية -->
+            <div class="game-card featured" data-game="nutrition">
+                <div class="featured-badge">مميزة!</div>
+                <div class="game-image" style="background-image: url('https://cdn.pixabay.com/photo/2017/06/02/18/24/fruit-2367029_1280.jpg')">
+                    <div class="game-level">مستوى: <span id="nutritionLevel">سهل</span></div>
+                </div>
+                <div class="game-content">
+                    <h3 class="game-title">تحدي التغذية الصحية</h3>
+                    <p class="game-desc">تعرف على الأطعمة الصحية واختر الأفضل لصحتك وعافيتك</p>
+                    <div class="game-meta">
+                        <span><i class="fas fa-star"></i> 4.8 (1.2K تقييم)</span>
+                        <span><i class="fas fa-users"></i> 5K+ لاعب</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- لعبة السلم الصحي -->
+            <div class="game-card" data-game="ladder">
+                <div class="game-image" style="background-image: url('https://mz-mz.net/wp-content/up/2021/10/%D8%A7%D9%84%D9%87%D8%B1%D9%85-%D8%A7%D9%84%D8%BA%D8%B0%D8%A7%D8%A6%D9%8A-%D8%A7%D9%84%D8%B5%D8%AD%D9%8A-%D9%88%D8%A3%D9%87%D9%85-%D8%A7%D9%84%D9%85%D8%AC%D9%85%D9%88%D8%B9%D8%A7%D8%AA-%D8%A7%D9%84%D8%BA%D8%B0%D8%A7%D8%A6%D9%8A%D8%A9-%D9%84%D9%85%D8%AE%D8%AA%D9%84%D9%81-%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D8%B1-768x603.png')">
+                    <div class="game-level">مستوى: <span id="ladderLevel">سهل</span></div>
+                </div>
+                <div class="game-content">
+                    <h3 class="game-title">السلم الصحي</h3>
+                    <p class="game-desc">أجب عن الأسئلة الصحية لتتسلق السلم نحو حياة أكثر صحة</p>
+                    <div class="game-meta">
+                        <span><i class="fas fa-star"></i> 4.6 (890 تقييم)</span>
+                        <span><i class="fas fa-users"></i> 3.5K+ لاعب</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- لعبة صيد الفواكه -->
+            <div class="game-card" data-game="fruit">
+                <div class="game-image" style="background-image: url('https://cdn.pixabay.com/photo/2016/01/05/13/58/apple-1122537_1280.jpg')">
+                    <div class="game-level">مستوى: <span id="fruitLevel">سهل</span></div>
+                </div>
+                <div class="game-content">
+                    <h3 class="game-title">صيد الفواكه</h3>
+                    <p class="game-desc">التقط الفواكه الصحية وتجنب الحلويات لتحصل على نقاط أكثر</p>
+                    <div class="game-meta">
+                        <span><i class="fas fa-star"></i> 4.7 (1.5K تقييم)</span>
+                        <span><i class="fas fa-users"></i> 7K+ لاعب</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- نافذة الألعاب -->
+    <div class="game-modal" id="gameModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModal">&times;</button>
+            <h2 id="modalTitle">عنوان اللعبة</h2>
+            <div class="game-container" id="gameContainer">
+                <!-- محتوى اللعبة سيتم حقنه هنا -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // بيانات الألعاب
+        const games = {
+            nutrition: {
+                title: "تحدي التغذية الصحية",
+                description: "اختر الأطعمة الصحية وتجنب غير الصحية لتحصل على أعلى النقاط",
+                init: initNutritionGame
+            },
+            ladder: {
+                title: "السلم الصحي",
+                description: "أجب عن الأسئلة الصحية بشكل صحيح لتتسلق السلم",
+                init: initLadderGame
+            },
+            fruit: {
+                title: "صيد الفواكه",
+                description: "التقط الفواكه الصحية وتجنب الحلويات لتحصل على نقاط أكثر",
+                init: initFruitGame
+            }
+        };
+        
+        // إعدادات الصعوبة
+        let difficulty = "easy";
+        const difficultyBtns = document.querySelectorAll('.difficulty-btn');
+        const levelSpans = {
+            nutrition: document.getElementById('nutritionLevel'),
+            ladder: document.getElementById('ladderLevel'),
+            fruit: document.getElementById('fruitLevel')
+        };
+        
+        // عناصر DOM
+        const gameModal = document.getElementById('gameModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const gameContainer = document.getElementById('gameContainer');
+        const closeModal = document.getElementById('closeModal');
+        const gameCards = document.querySelectorAll('.game-card');
+        
+        // إضافة مستمعين للأحداث
+        gameCards.forEach(card => {
+            card.addEventListener('click', () => {
+                const gameId = card.dataset.game;
+                openGame(gameId);
+            });
+        });
+        
+        closeModal.addEventListener('click', () => {
+            gameModal.classList.remove('active');
+        });
+        
+        difficultyBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                difficultyBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                difficulty = btn.dataset.level;
+                
+                // تحديث مستوى الصعوبة المعروض
+                Object.keys(levelSpans).forEach(game => {
+                    levelSpans[game].textContent = getDifficultyName(difficulty);
+                });
+            });
+        });
+        
+        function getDifficultyName(level) {
+            const names = {
+                easy: "سهل",
+                medium: "متوسط",
+                hard: "صعب"
+            };
+            return names[level] || "سهل";
+        }
+        
+        // فتح لعبة محددة
+        function openGame(gameId) {
+            const game = games[gameId];
+            
+            modalTitle.textContent = game.title;
+            gameContainer.innerHTML = `
+                <p style="text-align:center;color:#666">${game.description} - المستوى: ${getDifficultyName(difficulty)}</p>
+                <div id="gameContent"></div>
+            `;
+            
+            game.init();
+            gameModal.classList.add('active');
+        }
+        
+        // لعبة التغذية الصحية
+        function initNutritionGame() {
+            const foods = [
+                {
+                    name: "تفاح",
+                    image: "https://cdn.pixabay.com/photo/2016/01/05/13/58/apple-1122537_640.jpg",
+                    healthy: true,
+                    fact: "التفاح غني بالألياف وفيتامين C",
+                    benefits: [
+                        "يعزز صحة الجهاز الهضمي",
+                        "يساعد في خفض الكوليسترول",
+                        "غني بمضادات الأكسدة"
+                    ]
+                },
+                {
+                    name: "برجر",
+                    image: "https://cdn.pixabay.com/photo/2014/10/19/20/59/hamburger-494706_640.jpg",
+                    healthy: false,
+                    fact: "البرجر الجاهز عالي بالدهون المشبعة والصوديوم",
+                    risks: [
+                        "يزيد خطر أمراض القلب",
+                        "يسبب زيادة الوزن",
+                        "غني بالسعرات الحرارية الفارغة"
+                    ]
+                },
+                {
+                    name: "سلطة خضراء",
+                    image: "https://cdn.pixabay.com/photo/2017/10/09/19/29/salad-2834549_640.jpg",
+                    healthy: true,
+                    fact: "السلطة الخضراء غنية بالفيتامينات والمعادن",
+                    benefits: [
+                        "قليلة السعرات الحرارية",
+                        "غنية بالألياف",
+                        "تحتوي على مضادات أكسدة"
+                    ]
+                },
+                {
+                    name: "بطاطس مقلية",
+                    image: "https://cdn.pixabay.com/photo/2016/11/20/09/06/french-fries-1842313_640.jpg",
+                    healthy: false,
+                    fact: "الأطعمة المقلية عالية بالسعرات الحرارية والدهون غير الصحية",
+                    risks: [
+                        "تزيد خطر السمنة",
+                        "تحتوي على دهون متحولة",
+                        "فقيرة بالعناصر الغذائية"
+                    ]
+                },
+                {
+                    name: "سمك سلمون",
+                    image: "https://cdn.pixabay.com/photo/2016/03/05/20/00/salmon-1238248_640.jpg",
+                    healthy: true,
+                    fact: "السلمون غني بأوميغا 3 المفيد لصحة القلب",
+                    benefits: [
+                        "يعزز صحة الدماغ",
+                        "يقلل الالتهابات",
+                        "مصدر ممتاز للبروتين"
+                    ]
+                },
+                {
+                    name: "مشروب غازي",
+                    image: "https://cdn.pixabay.com/photo/2014/09/26/19/51/drink-462776_640.jpg",
+                    healthy: false,
+                    fact: "المشروبات الغازية تحتوي على كميات كبيرة من السكر",
+                    risks: [
+                        "تسبب تسوس الأسنان",
+                        "ترفع مستويات السكر في الدم",
+                        "ترتبط بالسمنة والسكري"
+                    ]
+                },
+                {
+                    name: "خضروات مشكلة",
+                    image: "https://cdn.pixabay.com/photo/2016/11/23/18/31/pasta-1854245_640.jpg",
+                    healthy: true,
+                    fact: "الخضروات المتنوعة توفر مجموعة واسعة من العناصر الغذائية",
+                    benefits: [
+                        "تقوي المناعة",
+                        "تحمي من الأمراض المزمنة",
+                        "تحسن صحة البشرة"
+                    ]
+                },
+                {
+                    name: "بيتزا",
+                    image: "https://cdn.pixabay.com/photo/2017/12/09/08/18/pizza-3007395_640.jpg",
+                    healthy: false,
+                    fact: "البيتزا الجاهزة عالية بالدهون والملح",
+                    risks: [
+                        "تسبب ارتفاع ضغط الدم",
+                        "غنية بالكربوهيدرات المكررة",
+                        "تحتوي على إضافات صناعية"
+                    ]
+                },
+                {
+                    name: "مكسرات",
+                    image: "https://cdn.pixabay.com/photo/2016/03/23/15/00/nuts-1275484_640.jpg",
+                    healthy: true,
+                    fact: "المكسرات مصدر ممتاز للدهون الصحية والبروتين",
+                    benefits: [
+                        "تفيد صحة القلب",
+                        "تعزز الشعور بالشبع",
+                        "غنية بالمغنيسيوم"
+                    ]
+                },
+                {
+                    name: "دونات",
+                    image: "https://cdn.pixabay.com/photo/2018/04/07/15/03/doughnut-3299086_640.jpg",
+                    healthy: false,
+                    fact: "الدونات غنية بالسكر والدهون غير الصحية",
+                    risks: [
+                        "تسبب ارتفاع سريع في سكر الدم",
+                        "تزيد خطر السكري",
+                        "فقيرة بالعناصر الغذائية"
+                    ]
+                },
+                {
+                    name: "زبادي يوناني",
+                    image: "https://cdn.pixabay.com/photo/2017/06/28/11/15/yogurt-2450086_640.jpg",
+                    healthy: true,
+                    fact: "الزبادي اليوناني غني بالبروتين والبروبيوتيك",
+                    benefits: [
+                        "يحسن صحة الأمعاء",
+                        "يقوي العظام",
+                        "يساعد في بناء العضلات"
+                    ]
+                },
+                {
+                    name: "نقانق",
+                    image: "https://cdn.pixabay.com/photo/2017/11/10/15/04/sausage-2936136_640.jpg",
+                    healthy: false,
+                    fact: "النقانق تحتوي على مواد حافظة ودهون مشبعة",
+                    risks: [
+                        "ترتبط بسرطان القولون",
+                        "تزيد خطر أمراض القلب",
+                        "غنية بالصوديوم"
+                    ]
+                },
+                {
+                    name: "شوفان",
+                    image: "https://cdn.pixabay.com/photo/2018/05/21/11/36/oatmeal-3418412_640.jpg",
+                    healthy: true,
+                    fact: "الشوفان غني بالألياف القابلة للذوبان",
+                    benefits: [
+                        "يساعد في خفض الكوليسترول",
+                        "يحسن صحة القلب",
+                        "يعزز الشعور بالشبع"
+                    ]
+                },
+                {
+                    name: "آيس كريم",
+                    image: "https://cdn.pixabay.com/photo/2018/04/27/10/44/dessert-3354303_640.jpg",
+                    healthy: false,
+                    fact: "الآيس كريم غني بالسكر والدهون المشبعة",
+                    risks: [
+                        "يسبب زيادة الوزن",
+                        "يرفع مستويات السكر في الدم",
+                        "يحتوي على سعرات حرارية عالية"
+                    ]
+                },
+                {
+                    name: "بيض مسلوق",
+                    image: "https://cdn.pixabay.com/photo/2017/05/27/21/50/egg-2349619_640.jpg",
+                    healthy: true,
+                    fact: "البيض مصدر ممتاز للبروتين والفيتامينات",
+                    benefits: [
+                        "يعزز صحة العين",
+                        "غني بفيتامين B12",
+                        "يساعد في بناء العضلات"
+                    ]
+                }
+            ];
+            
+            let score = 0;
+            let currentRound = 1;
+            let maxRounds;
+            let correctAnswers = 0;
+            let requiredCorrect;
+            
+            // تحديد عدد الجولات بناء على مستوى الصعوبة
+            switch(difficulty) {
+                case "easy":
+                    maxRounds = 5;
+                    requiredCorrect = 3;
+                    break;
+                case "medium":
+                    maxRounds = 7;
+                    requiredCorrect = 5;
+                    break;
+                case "hard":
+                    maxRounds = 10;
+                    requiredCorrect = 8;
+                    break;
+                default:
+                    maxRounds = 5;
+                    requiredCorrect = 3;
+            }
+            
+            const gameContent = document.getElementById('gameContent');
+            const feedbackEl = document.createElement('div');
+            feedbackEl.className = 'nutrition-feedback';
+            gameContent.appendChild(feedbackEl);
+            
+            function showRound() {
+                if (currentRound > maxRounds || correctAnswers >= requiredCorrect) {
+                    showResults();
+                    return;
+                }
+                
+                gameContent.innerHTML = `
+                    <h3 style="text-align:center;color:${getDifficultyColor()}">الجولة ${currentRound} من ${maxRounds} - المستوى: ${getDifficultyName(difficulty)}</h3>
+                    <p style="text-align:center">اختر الأطعمة الصحية وتجنب غير الصحية</p>
+                    <div class="food-options" id="foodOptions"></div>
+                `;
+                
+                const foodOptionsEl = document.getElementById('foodOptions');
+                const shuffledFoods = [...foods].sort(() => 0.5 - Math.random());
+                
+                // اختيار عدد مختلف من الخيارات حسب الصعوبة
+                let numOptions;
+                switch(difficulty) {
+                    case "easy":
+                        numOptions = 4;
+                        break;
+                    case "medium":
+                        numOptions = 6;
+                        break;
+                    case "hard":
+                        numOptions = 8;
+                        break;
+                    default:
+                        numOptions = 4;
+                }
+                
+                const selectedFoods = shuffledFoods.slice(0, numOptions);
+                
+                selectedFoods.forEach(food => {
+                    const foodCard = document.createElement('div');
+                    foodCard.className = 'food-card';
+                    foodCard.innerHTML = `
+                        <div class="food-image" style="background-image:url(${food.image})"></div>
+                        <div class="food-name">${food.name}</div>
+                    `;
+                    
+                    foodCard.addEventListener('click', () => checkAnswer(food));
+                    foodOptionsEl.appendChild(foodCard);
+                });
+                
+                feedbackEl.style.display = 'none';
+            }
+            
+            function getDifficultyColor() {
+                const colors = {
+                    easy: "#4CAF50",
+                    medium: "#FF9800",
+                    hard: "#F44336"
+                };
+                return colors[difficulty] || "#4CAF50";
+            }
+            
+            function checkAnswer(food) {
+                const foodOptions = document.querySelectorAll('.food-card');
+                foodOptions.forEach(card => card.style.pointerEvents = 'none');
+                
+                if (food.healthy) {
+                    score += 10;
+                    correctAnswers++;
+                    feedbackEl.className = 'nutrition-feedback feedback-correct';
+                    feedbackEl.innerHTML = `
+                        <div class="feedback-title">
+                            <i class="fas fa-check-circle"></i>
+                            إجابة صحيحة! ${food.name} غذاء صحي
+                        </div>
+                        <p>${food.fact}</p>
+                        <div class="health-benefits">
+                            <h4>فوائد ${food.name}:</h4>
+                            <ul>
+                                ${food.benefits.map(benefit => `<li>${benefit}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                } else {
+                    feedbackEl.className = 'nutrition-feedback feedback-wrong';
+                    feedbackEl.innerHTML = `
+                        <div class="feedback-title">
+                            <i class="fas fa-times-circle"></i>
+                            إجابة خاطئة! ${food.name} ليس خياراً صحياً
+                        </div>
+                        <p>${food.fact}</p>
+                        <div class="health-benefits">
+                            <h4>مخاطر ${food.name}:</h4>
+                            <ul>
+                                ${food.risks.map(risk => `<li>${risk}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+                
+                feedbackEl.style.display = 'block';
+                currentRound++;
+                
+                setTimeout(showRound, 3000);
+            }
+            
+            function showResults() {
+                const percentage = Math.round((correctAnswers / maxRounds) * 100);
+                let message, color;
+                
+                if (percentage >= 80) {
+                    message = "ممتاز! أنت خبير في التغذية الصحية";
+                    color = "#4CAF50";
+                } else if (percentage >= 60) {
+                    message = "جيد جداً! لديك معرفة جيدة بالأطعمة الصحية";
+                    color = "#8BC34A";
+                } else if (percentage >= 40) {
+                    message = "ليس سيئاً! يمكنك تحسين معرفتك بالتغذية";
+                    color = "#FFC107";
+                } else {
+                    message = "تحتاج لمعرفة المزيد عن التغذية الصحية";
+                    color = "#F44336";
+                }
+                
+                gameContent.innerHTML = `
+                    <div style="text-align:center; margin:20px 0;">
+                        <h3 style="color:${color}">${message}</h3>
+                        <p>لقد أكملت التحدي بنجاح!</p>
+                        <div style="font-size:1.5rem; margin:15px 0;">
+                            <span style="color:${getDifficultyColor()}">${correctAnswers}</span> / ${maxRounds}
+                        </div>
+                        <div style="background:#f5f5f5; padding:10px; border-radius:5px; margin:15px 0;">
+                            <p>نقاطك: <span style="font-weight:bold;color:${getDifficultyColor()}">${score}</span></p>
+                            <p>المستوى: <span style="font-weight:bold">${getDifficultyName(difficulty)}</span></p>
+                        </div>
+                        <button class="restart-btn" onclick="initNutritionGame()">
+                            <i class="fas fa-redo"></i> إعادة اللعب
+                        </button>
+                        <button class="restart-btn" style="background:${getDifficultyColor()}" onclick="showCertificate('تحدي التغذية الصحية', ${score}, ${correctAnswers}, ${maxRounds})">
+                            <i class="fas fa-award"></i> عرض الشهادة
+                        </button>
+                    </div>
+                    ${getRandomHealthTip()}
+                `;
+            }
+            
+            function getRandomHealthTip() {
+                const tips = [
+                    {
+                        title: "نصيحة غذائية",
+                        content: "حاول أن تجعل نصف طبقك من الخضروات في كل وجبة للحصول على تغذية متوازنة."
+                    },
+                    {
+                        title: "معلومة مفيدة",
+                        content: "شرب كوب من الماء قبل الوجبات بنصف ساعة يمكن أن يساعد في تقليل كمية الطعام المتناولة."
+                    },
+                    {
+                        title: "نصيحة لشراء الأغذية",
+                        content: "اقرأ الملصقات الغذائية عند التسوق وتجنب المنتجات التي تحتوي على أكثر من 5غ سكر لكل 100غ."
+                    }
+                ];
+                
+                const tip = tips[Math.floor(Math.random() * tips.length)];
+                
+                return `
+                    <div class="health-tip">
+                        <h4>${tip.title}</h4>
+                        <p>${tip.content}</p>
+                    </div>
+                `;
+            }
+            
+            showRound();
+        }
+        
+        // لعبة السلم الصحي
+        function initLadderGame() {
+            const questions = [
+                {
+                    question: "كم ساعة من النوم يحتاجها الشخص البالغ يومياً؟",
+                    options: ["4-5 ساعات", "6-7 ساعات", "7-9 ساعات", "10 ساعات أو أكثر"],
+                    correct: 2,
+                    fact: "البالغون يحتاجون 7-9 ساعات نوم يومياً للحفاظ على صحة جيدة. النوم الكافي يحسن الذاكرة ويقلل من خطر الأمراض المزمنة."
+                },
+                {
+                    question: "ما هي المدة الموصى بها للنشاط البدني الأسبوعي؟",
+                    options: ["30 دقيقة", "60 دقيقة", "150 دقيقة", "300 دقيقة"],
+                    correct: 2,
+                    fact: "منظمة الصحة العالمية توصي بـ150 دقيقة على الأقل من النشاط البدني المعتدل أسبوعياً، أو 75 دقيقة من النشاط القوي."
+                },
+                {
+                    question: "أي من هذه الأطعمة يعتبر الأفضل لصحة القلب؟",
+                    options: ["اللحوم الحمراء", "السلمون", "المقرمشات المالحة", "المشروبات الغازية"],
+                    correct: 1,
+                    fact: "السلمون غني بأحماض أوميغا 3 الدهنية التي تقلل الالتهاب وتخفض خطر أمراض القلب."
+                },
+                {
+                    question: "ما هي كمية الماء الموصى بها يومياً؟",
+                    options: ["1 لتر", "1.5-2 لتر", "3 لترات", "4 لترات"],
+                    correct: 1,
+                    fact: "يحتاج الجسم حوالي 1.5-2 لتر ماء يومياً، وقد تزيد حسب النشاط البدني والمناخ."
+                },
+                {
+                    question: "ما هو أفضل وقت لممارسة الرياضة؟",
+                    options: ["الصباح الباكر", "بعد الظهر", "المساء", "أي وقت يناسبك"],
+                    correct: 3,
+                    fact: "أفضل وقت للتمارين هو الوقت الذي يمكنك الالتزام به باستمرار. الانتظام أهم من التوقيت."
+                },
+                {
+                    question: "ما هي أكثر الفواكه غنى بفيتامين C؟",
+                    options: ["موز", "برتقال", "تفاح", "عنب"],
+                    correct: 1,
+                    fact: "البرتقال من أغنى الفواكه بفيتامين C الذي يعزز المناعة ويساعد في امتصاص الحديد."
+                },
+                {
+                    question: "أي من هذه العادات تضر صحة الأسنان؟",
+                    options: ["تنظيف الأسنان مرتين يومياً", "استخدام الخيط الطبي", "شرب المشروبات الغازية بكثرة", "زيارة طبيب الأسنان سنوياً"],
+                    correct: 2,
+                    fact: "المشروبات الغازية تحتوي على أحماض وسكريات تسبب تآكل مينا الأسنان وتسوسها."
+                },
+                {
+                    question: "ما هي المدة القصوى للجلوس المتواصل التي ينصح بها؟",
+                    options: ["30 دقيقة", "ساعة", "ساعتين", "3 ساعات"],
+                    correct: 2,
+                    fact: "ينصح بالوقوف والحركة كل ساعتين من الجلوس لتقليل خطر الأمراض الناتجة عن الجلوس الطويل."
+                },
+                {
+                    question: "أي من هذه الزيوت هو الأفضل للطهي في درجات حرارة عالية؟",
+                    options: ["زيت الزيتون البكر الممتاز", "زيت جوز الهند", "زيت الكانولا", "زيت الذرة"],
+                    correct: 1,
+                    fact: "زيت جوز الهند من أكثر الزيوت تحملاً لدرجات الحرارة العالية بسبب تركيبته الكيميائية."
+                },
+                {
+                    question: "ما هي أعراض الجفاف؟",
+                    options: ["العطش وجفاف الفم", "الصداع والدوخة", "قلة التبول", "كل ما سبق"],
+                    correct: 3,
+                    fact: "الجفاف يسبب العطش وجفاف الفم والصداع والدوخة وقلة التبول. في الحالات الشديدة قد يسبب الإغماء."
+                },
+                {
+                    question: "كم حصة من الخضروات والفواكه ينصح بتناولها يومياً؟",
+                    options: ["1-2 حصص", "3-4 حصص", "5 حصص على الأقل", "7 حصص أو أكثر"],
+                    correct: 2,
+                    fact: "ينصح بتناول 5 حصص على الأقل من الخضروات والفواكه يومياً لتقليل خطر الأمراض المزمنة."
+                },
+                {
+                    question: "ما هو أفضل مصدر للكالسيوم لمن يعاني من حساسية اللاكتوز؟",
+                    options: ["الحليب البقري", "الزبادي", "الخضروات الورقية الخضراء", "الجبنة الصفراء"],
+                    correct: 2,
+                    fact: "الخضروات الورقية الخضراء مثل السبانخ والكرنب غنية بالكالسيوم ومناسبة لمن يعاني من حساسية اللاكتوز."
+                },
+                {
+                    question: "ما هي فوائد الصوم المتقطع؟",
+                    options: ["خسارة الوزن", "تحسين حساسية الإنسولين", "تقليل الالتهابات", "كل ما سبق"],
+                    correct: 3,
+                    fact: "الصوم المتقطع قد يساعد في خسارة الوزن وتحسين حساسية الإنسولين وتقليل الالتهابات في الجسم."
+                },
+                {
+                    question: "ما هي مدة المشي اليومي الموصى بها؟",
+                    options: ["5 دقائق", "15 دقيقة", "30 دقيقة", "60 دقيقة"],
+                    correct: 2,
+                    fact: "ينصح بالمشي 30 دقيقة يومياً على الأقل لتعزيز الصحة العامة والوقاية من الأمراض."
+                },
+                {
+                    question: "أي من هذه المشروبات يحتوي على كافيين أقل؟",
+                    options: ["القهوة", "الشاي الأخضر", "مشروبات الطاقة", "الكولا"],
+                    correct: 1,
+                    fact: "الشاي الأخضر يحتوي على كافيين أقل من القهوة ومشروبات الطاقة والكولا."
+                },
+                {
+                    question: "ما هي أعراض نقص فيتامين D؟",
+                    options: ["التعب والإرهاق", "آلام العظام", "تقلب المزاج", "كل ما سبق"],
+                    correct: 3,
+                    fact: "نقص فيتامين D قد يسبب التعب والإرهاق وآلام العظام وتقلب المزاج والاكتئاب."
+                },
+                {
+                    question: "كم مرة ينصح بفحص ضغط الدم سنوياً؟",
+                    options: ["مرة واحدة", "مرتين على الأقل", "كل 3 أشهر", "فقط عند الشعور بأعراض"],
+                    correct: 1,
+                    fact: "ينصح بفحص ضغط الدم مرتين على الأقل سنوياً حتى لو لم تكن هناك أعراض، خاصة بعد سن الأربعين."
+                },
+                {
+                    question: "ما هو أفضل وقت لأخذ فيتامينات ما قبل الولادة؟",
+                    options: ["قبل النوم", "مع أكبر وجبة في اليوم", "على معدة فارغة", "أي وقت لا يهم"],
+                    correct: 1,
+                    fact: "يفضل أخذ فيتامينات ما قبل الولادة مع أكبر وجبة في اليوم لتقليل الغثيان وتحسين الامتصاص."
+                },
+                {
+                    question: "ما هي فوائد تمارين القوة؟",
+                    options: ["بناء العضلات", "تحسين كثافة العظام", "زيادة معدل الأيض", "كل ما سبق"],
+                    correct: 3,
+                    fact: "تمارين القوة تساعد في بناء العضلات وتحسين كثافة العظام وزيادة معدل الأيض."
+                },
+                {
+                    question: "ما هو العمر المناسب لبدء فحص سرطان القولون؟",
+                    options: ["30 سنة", "40 سنة", "45 سنة", "50 سنة"],
+                    correct: 2,
+                    fact: "ينصح ببدء فحص سرطان القولون في عمر 45 سنة للأشخاص العاديين، وقد يبدأ مبكراً لمن لديهم عوامل خطر."
+                },
+                {
+                    question: "ما هي كمية السكر الموصى بها يومياً؟",
+                    options: ["25غ (6 ملاعق صغيرة)", "50غ (12 ملعقة صغيرة)", "75غ (18 ملعقة صغيرة)", "100غ (24 ملعقة صغيرة)"],
+                    correct: 0,
+                    fact: "توصي منظمة الصحة العالمية بألا تزيد كمية السكر المضاف عن 25غ يومياً (6 ملاعق صغيرة)."
+                },
+                {
+                    question: "ما هي فوائد التأمل؟",
+                    options: ["تقليل التوتر", "تحسين النوم", "زيادة التركيز", "كل ما سبق"],
+                    correct: 3,
+                    fact: "التأمل المنتظم يساعد في تقليل التوتر وتحسين النوم وزيادة التركيز وتحسين الصحة العامة."
+                },
+                {
+                    question: "ما هي مدة التعرض اليومي الموصى بها لأشعة الشمس؟",
+                    options: ["5-10 دقائق", "15-30 دقيقة", "ساعة", "ساعتين"],
+                    correct: 1,
+                    fact: "ينصح بالتعرض لأشعة الشمس 15-30 دقيقة يومياً للحصول على كمية كافية من فيتامين D."
+                },
+                {
+                    question: "ما هي أعراض ارتفاع ضغط الدم؟",
+                    options: ["الصداع", "الدوخة", "عدم وضوح الرؤية", "كل ما سبق"],
+                    correct: 3,
+                    fact: "ارتفاع ضغط الدم قد يسبب الصداع والدوخة وعدم وضوح الرؤية، وقد لا يسبب أي أعراض في كثير من الحالات."
+                },
+                {
+                    question: "كم مرة ينصح بتناول الأسماك أسبوعياً؟",
+                    options: ["مرة واحدة", "مرتين على الأقل", "3 مرات", "كل يوم"],
+                    correct: 1,
+                    fact: "ينصح بتناول الأسماك مرتين على الأقل أسبوعياً، خاصة الأسماك الدهنية الغنية بأوميغا 3."
+                }
+            ];
+            
+            let currentQuestion = 0;
+            let playerPosition = 0;
+            const stepHeight = 70;
+            let score = 0;
+            let maxQuestions;
+            
+            // تحديد عدد الأسئلة بناء على الصعوبة
+            switch(difficulty) {
+                case "easy":
+                    maxQuestions = 10;
+                    break;
+                case "medium":
+                    maxQuestions = 15;
+                    break;
+                case "hard":
+                    maxQuestions = 25;
+                    break;
+                default:
+                    maxQuestions = 10;
+            }
+            
+            // خلط الأسئلة عشوائياً
+            const shuffledQuestions = [...questions].sort(() => 0.5 - Math.random()).slice(0, maxQuestions);
+            
+            const gameContent = document.getElementById('gameContent');
+            gameContent.className = 'ladder-game';
+            gameContent.innerHTML = `
+                <div style="text-align:center; margin-bottom:20px;">
+                    <h3 style="color:${getDifficultyColor()}">المستوى: ${getDifficultyName(difficulty)}</h3>
+                    <p>أجب بشكل صحيح على ${maxQuestions} أسئلة لتصل إلى قمة السلم</p>
+                </div>
+                <div class="ladder-container">
+                    <div class="player" id="player">أنت</div>
+                </div>
+                <div class="question-container">
+                    <div class="question-text" id="question"></div>
+                </div>
+                <div class="options" id="options"></div>
+                <div class="health-fact" id="healthFact"></div>
+            `;
+            
+            const questionEl = document.getElementById('question');
+            const optionsEl = document.getElementById('options');
+            const playerEl = document.getElementById('player');
+            const healthFactEl = document.getElementById('healthFact');
+            
+            function loadQuestion() {
+                if (currentQuestion >= shuffledQuestions.length) {
+                    showResults();
+                    return;
+                }
+                
+                const q = shuffledQuestions[currentQuestion];
+                questionEl.textContent = q.question;
+                optionsEl.innerHTML = '';
+                healthFactEl.style.display = 'none';
+                
+                q.options.forEach((option, index) => {
+                    const optionEl = document.createElement('div');
+                    optionEl.className = 'option';
+                    optionEl.textContent = option;
+                    optionEl.addEventListener('click', () => checkAnswer(index, q.correct));
+                    optionsEl.appendChild(optionEl);
+                });
+            }
+            
+            function checkAnswer(selectedIndex, correctIndex) {
+                const options = document.querySelectorAll('.option');
+                const q = shuffledQuestions[currentQuestion];
+                
+                options.forEach((opt, index) => {
+                    if (index === correctIndex) {
+                        opt.classList.add('correct');
+                    } else if (index === selectedIndex) {
+                        opt.classList.add('incorrect');
+                    }
+                    
+                    opt.style.pointerEvents = 'none';
+                });
+                
+                if (selectedIndex === correctIndex) {
+                    score += 10;
+                    playerPosition++;
+                    const newPosition = 20 + (playerPosition * stepHeight);
+                    playerEl.style.bottom = `${newPosition}px`;
+                    
+                    setTimeout(() => {
+                        currentQuestion++;
+                        loadQuestion();
+                    }, 1500);
+                } else {
+                    healthFactEl.innerHTML = `
+                        <h4>معلومة صحية:</h4>
+                        <p>${q.fact}</p>
+                    `;
+                    healthFactEl.style.display = 'block';
+                }
+            }
+            
+            function showResults() {
+                const percentage = Math.round((playerPosition / shuffledQuestions.length) * 100);
+                let message, color;
+                
+                if (percentage >= 90) {
+                    message = "ممتاز! أنت خبير في الصحة والعافية";
+                    color = "#4CAF50";
+                } else if (percentage >= 70) {
+                    message = "جيد جداً! لديك معرفة صحية ممتازة";
+                    color = "#8BC34A";
+                } else if (percentage >= 50) {
+                    message = "جيد! لديك أساسيات المعرفة الصحية";
+                    color = "#FFC107";
+                } else {
+                    message = "يمكنك تحسين معرفتك الصحية";
+                    color = "#F44336";
+                }
+                
+                gameContent.innerHTML = `
+                    <div style="text-align:center; margin:20px 0;">
+                        <h3 style="color:${color}">${message}</h3>
+                        <p>لقد أكملت ${playerPosition} من ${shuffledQuestions.length} سؤالاً بشكل صحيح</p>
+                        <div style="font-size:1.5rem; margin:15px 0;">
+                            <span style="color:${getDifficultyColor()}">${score}</span> نقطة
+                        </div>
+                        <div style="background:#f5f5f5; padding:10px; border-radius:5px; margin:15px 0;">
+                            <p>المستوى: <span style="font-weight:bold">${getDifficultyName(difficulty)}</span></p>
+                            <p>النسبة المئوية: <span style="font-weight:bold">${percentage}%</span></p>
+                        </div>
+                        <button class="restart-btn" onclick="initLadderGame()">
+                            <i class="fas fa-redo"></i> إعادة اللعب
+                        </button>
+                        <button class="restart-btn" style="background:${getDifficultyColor()}" onclick="showCertificate('السلم الصحي', ${score}, ${playerPosition}, ${shuffledQuestions.length})">
+                            <i class="fas fa-award"></i> عرض الشهادة
+                        </button>
+                        <button class="restart-btn" style="background:#2196F3; margin-top:10px;" onclick="showLeaderboard('ladder', ${score})">
+                            <i class="fas fa-trophy"></i> لوحة المتصدرين
+                        </button>
+                    </div>
+                    ${getRandomHealthTip()}
+                `;
+            }
+            
+            loadQuestion();
+        }
+        
+        // لعبة صيد الفواكه
+        function initFruitGame() {
+            const fruits = [
+                { name: "تفاح", image: "https://cdn.pixabay.com/photo/2016/01/05/13/58/apple-1122537_640.jpg", healthy: true, points: 10 },
+                { name: "موز", image: "https://cdn.pixabay.com/photo/2017/06/27/22/21/banana-2449019_640.jpg", healthy: true, points: 10 },
+                { name: "برتقال", image: "https://cdn.pixabay.com/photo/2017/01/20/15/06/oranges-1995056_640.jpg", healthy: true, points: 10 },
+                { name: "فراولة", image: "https://cdn.pixabay.com/photo/2018/04/29/11/54/strawberries-3359755_640.jpg", healthy: true, points: 10 },
+                { name: "عنب", image: "https://cdn.pixabay.com/photo/2018/02/08/21/12/grapes-3140758_640.jpg", healthy: true, points: 10 },
+                { name: "كيوي", image: "https://cdn.pixabay.com/photo/2017/09/11/15/34/kiwi-2738837_640.jpg", healthy: true, points: 10 },
+                { name: "أناناس", image: "https://cdn.pixabay.com/photo/2018/04/11/17/53/pineapple-3311389_640.jpg", healthy: true, points: 10 },
+                { name: "بطيخ", image: "https://cdn.pixabay.com/photo/2013/04/02/21/25/watermelon-99551_640.jpg", healthy: true, points: 10 },
+                { name: "خوخ", image: "https://cdn.pixabay.com/photo/2016/07/22/09/59/fruit-1534494_640.jpg", healthy: true, points: 10 },
+                { name: "كمثرى", image: "https://cdn.pixabay.com/photo/2016/01/05/13/53/pear-1123017_640.jpg", healthy: true, points: 10 },
+                { name: "كعكة", image: "https://cdn.pixabay.com/photo/2018/05/01/18/21/cake-3366431_640.jpg", healthy: false, points: -5 },
+                { name: "آيس كريم", image: "https://cdn.pixabay.com/photo/2018/04/27/10/44/dessert-3354303_640.jpg", healthy: false, points: -5 },
+                { name: "شوكولاتة", image: "https://cdn.pixabay.com/photo/2017/03/23/09/34/white-chocolate-2168195_640.jpg", healthy: false, points: -5 },
+                { name: "دونات", image: "https://cdn.pixabay.com/photo/2018/04/07/15/03/doughnut-3299086_640.jpg", healthy: false, points: -5 },
+                { name: "حلوى", image: "https://cdn.pixabay.com/photo/2017/01/11/11/33/cake-1971552_640.jpg", healthy: false, points: -5 }
+            ];
+            
+            const healthTips = [
+                "الفواكه غنية بالفيتامينات والمعادن الأساسية للجسم",
+                "تناول 5 حصص من الفواكه والخضروات يومياً يحسن الصحة",
+                "السكريات الطبيعية في الفواكه أفضل من السكريات المضافة",
+                "الفواكه تحتوي على ألياف تساعد في الهضم وتقلل الكوليسترول",
+                "استبدال الحلويات بالفواكه يقلل خطر السمنة والسكري",
+                "الفواكه الملونة تحتوي على مضادات أكسدة تحارب الأمراض",
+                "تناول الفواكه كوجبة خفيفة يقلل من الرغبة في السكريات",
+                "الفواكه الموسمية تكون أكثر فائدة وأقل سعرات حرارية",
+                "عصير الفواكه الطبيعي أفضل من المشروبات الغازية",
+                "قشر الفواكه مثل التفاح يحتوي على ألياف وفيتامينات إضافية"
+            ];
+            
+            let score = 0;
+            let timeLeft;
+            let gameActive = true;
+            let basketPosition = 50;
+            let fruitsCaught = 0;
+            let unhealthyMissed = 0;
+            let timerInterval, fruitInterval;
+            
+            // تحديد الوقت بناء على الصعوبة
+            switch(difficulty) {
+                case "easy":
+                    timeLeft = 90;
+                    break;
+                case "medium":
+                    timeLeft = 60;
+                    break;
+                case "hard":
+                    timeLeft = 45;
+                    break;
+                default:
+                    timeLeft = 60;
+            }
+            
+            const gameContent = document.getElementById('gameContent');
+            gameContent.className = 'fruit-game';
+            gameContent.innerHTML = `
+                <div class="game-ui">
+                    <div class="ui-box">النقاط: <span id="score">0</span></div>
+                    <div class="ui-box">الوقت: <span id="time">${timeLeft}</span> ثانية</div>
+                </div>
+                <div class="basket" id="basket"></div>
+                <div class="game-over" id="gameOver">
+                    <h2>انتهت اللعبة!</h2>
+                    <div class="final-stats">
+                        <p>نقاطك النهائية: <span class="highlight" id="finalScore">0</span></p>
+                        <p>الفواكه الصحية التي التقطتها: <span class="highlight" id="fruitsCaught">0</span></p>
+                        <p>الحلويات غير الصحية التي تجنبتها: <span class="highlight" id="unhealthyMissed">0</span></p>
+                    </div>
+                    <div class="health-tip" id="healthTip"></div>
+                    <button class="restart-btn" id="restartBtn">
+                        <i class="fas fa-redo"></i> اللعب مرة أخرى
+                    </button>
+                    <button class="restart-btn" style="background:${getDifficultyColor()}; margin-top:10px;" onclick="showCertificate('صيد الفواكه', ${score}, ${fruitsCaught}, ${fruitsCaught + unhealthyMissed})">
+                        <i class="fas fa-award"></i> عرض الشهادة
+                    </button>
+                    <button class="restart-btn" style="background:#2196F3; margin-top:10px;" onclick="showLeaderboard('fruit', ${score})">
+                        <i class="fas fa-trophy"></i> لوحة المتصدرين
+                    </button>
+                </div>
+            `;
+            
+            const scoreEl = document.getElementById('score');
+            const timeEl = document.getElementById('time');
+            const basketEl = document.getElementById('basket');
+            const gameOverEl = document.getElementById('gameOver');
+            const finalScoreEl = document.getElementById('finalScore');
+            const fruitsCaughtEl = document.getElementById('fruitsCaught');
+            const unhealthyMissedEl = document.getElementById('unhealthyMissed');
+            const healthTipEl = document.getElementById('healthTip');
+            const restartBtn = document.getElementById('restartBtn');
+            
+            // تحريك السلة بالماوس
+            gameContent.addEventListener('mousemove', (e) => {
+                if (!gameActive) return;
+                
+                const rect = gameContent.getBoundingClientRect();
+                const percent = ((e.clientX - rect.left) / rect.width) * 100;
+                basketPosition = Math.min(Math.max(percent, 5), 95);
+                basketEl.style.left = `${basketPosition}%`;
+            });
+            
+            // المؤقت
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                timeEl.textContent = timeLeft;
+                
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }, 1000);
+            
+            // إنشاء الفواكه
+            let fruitCreationDelay;
+            
+            switch(difficulty) {
+                case "easy":
+                    fruitCreationDelay = 1000;
+                    break;
+                case "medium":
+                    fruitCreationDelay = 800;
+                    break;
+                case "hard":
+                    fruitCreationDelay = 600;
+                    break;
+                default:
+                    fruitCreationDelay = 800;
+            }
+            
+            fruitInterval = setInterval(() => {
+                if (!gameActive) return;
+                
+                createFruit();
+            }, fruitCreationDelay);
+            
+            function createFruit() {
+                const fruit = document.createElement('div');
+                fruit.className = 'fruit';
+                
+                const randomFruit = fruits[Math.floor(Math.random() * fruits.length)];
+                fruit.style.backgroundImage = `url(${randomFruit.image})`;
+                fruit.dataset.points = randomFruit.points;
+                fruit.dataset.healthy = randomFruit.healthy;
+                fruit.dataset.name = randomFruit.name;
+                
+                const leftPosition = Math.random() * 80 + 5;
+                fruit.style.left = `${leftPosition}%`;
+                
+                gameContent.appendChild(fruit);
+                
+                let topPosition = -60;
+                let fallSpeed;
+                
+                // تحديد سرعة السقوط بناء على الصعوبة
+                switch(difficulty) {
+                    case "easy":
+                        fallSpeed = Math.random() * 2 + 2;
+                        break;
+                    case "medium":
+                        fallSpeed = Math.random() * 3 + 2;
+                        break;
+                    case "hard":
+                        fallSpeed = Math.random() * 4 + 3;
+                        break;
+                    default:
+                        fallSpeed = Math.random() * 3 + 2;
+                }
+                
+                const fallInterval = setInterval(() => {
+                    if (!gameActive) {
+                        clearInterval(fallInterval);
+                        return;
+                    }
+                    
+                    topPosition += fallSpeed;
+                    fruit.style.top = `${topPosition}px`;
+                    
+                    // التحقق من الاصطدام بالسلة
+                    if (topPosition >= gameContent.offsetHeight - 120) {
+                        const fruitLeft = parseFloat(fruit.style.left);
+                        
+                        if (Math.abs(fruitLeft - basketPosition) < 10) {
+                            clearInterval(fallInterval);
+                            fruit.remove();
+                            
+                            const points = parseInt(fruit.dataset.points);
+                            score += points;
+                            score = Math.max(0, score);
+                            scoreEl.textContent = score;
+                            
+                            if (points > 0) {
+                                fruitsCaught++;
+                            }
+                        }
+                    }
+                    
+                    // التحقق من وصول الفاكهة للأسفل
+                    if (topPosition >= gameContent.offsetHeight) {
+                        clearInterval(fallInterval);
+                        fruit.remove();
+                        
+                        if (fruit.dataset.healthy === 'false') {
+                            unhealthyMissed++;
+                        }
+                    }
+                }, 20);
+            }
+            
+            function endGame() {
+                gameActive = false;
+                clearInterval(timerInterval);
+                clearInterval(fruitInterval);
+                
+                finalScoreEl.textContent = score;
+                fruitsCaughtEl.textContent = fruitsCaught;
+                unhealthyMissedEl.textContent = unhealthyMissed;
+                
+                // عرض نصيحة صحية عشوائية
+                const randomTip = healthTips[Math.floor(Math.random() * healthTips.length)];
+                healthTipEl.innerHTML = `
+                    <h4>نصيحة صحية</h4>
+                    <p>${randomTip}</p>
+                `;
+                
+                gameOverEl.style.display = 'flex';
+            }
+            
+            restartBtn.addEventListener('click', () => {
+                gameContent.innerHTML = '';
+                initFruitGame();
+            });
+        }
+        
+        // عرض الشهادة
+        function showCertificate(gameName, score, correct, total) {
+            const percentage = Math.round((correct / total) * 100);
+            let grade, color;
+            
+            if (percentage >= 90) {
+                grade = "امتياز";
+                color = "#4CAF50";
+            } else if (percentage >= 70) {
+                grade = "جيد جداً";
+                color = "#2196F3";
+            } else if (percentage >= 50) {
+                grade = "جيد";
+                color = "#FFC107";
+            } else {
+                grade = "مقبول";
+                color = "#F44336";
+            }
+            
+            gameContainer.innerHTML = `
+                <div class="certificate">
+                    <h2>شهادة إنجاز</h2>
+                    <p>تمنح هذه الشهادة إلى</p>
+                    <h3>لاعب موقعك الطبي</h3>
+                    <p>لإكماله بنجاح</p>
+                    <h3>${gameName}</h3>
+                    <p>بمستوى ${getDifficultyName(difficulty)}</p>
+                    <p>بتقدير: <span style="color:${color}">${grade}</span></p>
+                    <p>النقاط: <span class="score">${score}</span></p>
+                    <p>الإجابات الصحيحة: ${correct} من ${total}</p>
+                    <p>النسبة المئوية: ${percentage}%</p>
+                    <button class="download-btn" onclick="downloadCertificate()">
+                        <i class="fas fa-download"></i> تحميل الشهادة
+                    </button>
+                    <button class="download-btn" style="background:#666; margin-top:10px;" onclick="goBackToGame()">
+                        <i class="fas fa-arrow-left"></i> العودة إلى اللعبة
+                    </button>
+                </div>
+            `;
+        }
+        
+        // عرض لوحة المتصدرين
+        function showLeaderboard(gameType, currentScore) {
+            // في تطبيق حقيقي، هنا ستجلب البيانات من قاعدة بيانات أو localStorage
+            const leaderboardData = [
+                { name: "أحمد", score: 450 },
+                { name: "محمد", score: 380 },
+                { name: "سارة", score: 360 },
+                { name: "فاطمة", score: 340 },
+                { name: "علي", score: 320 },
+                { name: "أنت", score: currentScore }
+            ].sort((a, b) => b.score - a.score).slice(0, 5);
+            
+            gameContainer.innerHTML = `
+                <div class="leaderboard">
+                    <h3>لوحة المتصدرين - ${getDifficultyName(difficulty)}</h3>
+                    ${leaderboardData.map((player, index) => `
+                        <div class="leaderboard-item">
+                            <div class="rank">${index + 1}</div>
+                            <div class="player-name">${player.name}</div>
+                            <div class="player-score">${player.score}</div>
+                        </div>
+                    `).join('')}
+                </div>
+                <button class="download-btn" style="display:block; margin:20px auto;" onclick="goBackToGame()">
+                    <i class="fas fa-arrow-left"></i> العودة إلى اللعبة
+                </button>
+            `;
+        }
+        
+        // وظائف مساعدة
+        function getDifficultyColor() {
+            const colors = {
+                easy: "#4CAF50",
+                medium: "#FF9800",
+                hard: "#F44336"
+            };
+            return colors[difficulty] || "#4CAF50";
+        }
+        
+        function getRandomHealthTip() {
+            const tips = [
+                {
+                    title: "نصيحة صحية",
+                    content: "حاول أن تشرب كوباً من الماء عند الاستيقاظ لترطيب جسمك بعد النوم."
+                },
+                {
+                    title: "معلومة مفيدة",
+                    content: "المشي 10 دقائق بعد كل وجبة يساعد في تحسين الهضم وتنظيم سكر الدم."
+                },
+                {
+                    title: "نصيحة لوجبة خفيفة",
+                    content: "استبدل رقائق البطاطس بالمكسرات غير المملحة لوجبة خفيفة صحية."
+                }
+            ];
+            
+            const tip = tips[Math.floor(Math.random() * tips.length)];
+            
+            return `
+                <div class="health-tip">
+                    <h4>${tip.title}</h4>
+                    <p>${tip.content}</p>
+                </div>
+            `;
+        }
+        
+        // وظائف للتحميل والعودة (ستحتاج لتطويرها في تطبيق حقيقي)
+        function downloadCertificate() {
+            alert("في التطبيق الكامل، ستتمكن من تحميل الشهادة كصورة أو PDF");
+        }
+        
+        function goBackToGame() {
+            const currentGame = document.getElementById('modalTitle').textContent;
+            
+            if (currentGame.includes("التغذية")) {
+                initNutritionGame();
+            } else if (currentGame.includes("السلم")) {
+                initLadderGame();
+            } else if (currentGame.includes("الفواكه")) {
+                initFruitGame();
+            }
+        }
+    </script>
+</body>
+</html>

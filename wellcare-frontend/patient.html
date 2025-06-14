@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>نظام حجز المواعيد المتاحة </title>
+  <link rel="stylesheet" href="./assets/css/style.css">
+</head>
+<body>
+
+<div class="header">
+  <h1> حجز المواعيد الطبية</h1>
+  <a href="../wellcare-frontend/index.html"><button>الصفحة الرئيسية</button></a>
+  <div id="userInfo">
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('availableAppointments')">المواعيد المتاحة</div>
+    <div class="tab" onclick="showTab('myAppointments')">المواعيد المحجوزة</div>
+  </div>
+
+  <div id="availableAppointments" class="tab-content active">
+    <h2 class="page-title">المواعيد المتاحة</h2>
+    
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="ابحث باسم الطبيب أو التخصص">
+      <select id="filterSpecialty">
+        <option value="">كل التخصصات</option>
+      </select>
+      <button onclick="loadAppointments()" class="refresh-btn">تحديث القائمة 🔄</button>
+    </div>
+    
+    <div id="appointmentsList"></div>
+  </div>
+
+  <div id="myAppointments" class="tab-content">
+    <h2 class="page-title">المواعيد المحجوزة</h2>
+    <button onclick="loadMyAppointments()" class="refresh-btn" style="margin-bottom: 20px;">تحديث القائمة 🔄</button>
+    <div id="myAppointmentsList"></div>
+  </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script>
+  function showTab(tabId) {
+    // إخفاء كل المحتويات
+    const contents = document.querySelectorAll('.tab-content');
+    contents.forEach(content => content.classList.remove('active'));
+    
+    // إلغاء تنشيط كل التبويبات
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    
+    // تنشيط التبويب والمحتوى المطلوب
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+    
+    // تحميل البيانات المناسبة
+    if (tabId === 'availableAppointments') {
+      loadAppointments();
+    } else if (tabId === 'myAppointments') {
+      loadMyAppointments();
+    }
+  }
+
+  // تهيئة الصفحة عند التحميل
+  document.addEventListener('DOMContentLoaded', function() {
+    // تهيئة التخزين المحلي
+    setupStorage();
+    
+    // تحميل البيانات
+    loadAppointments();
+  });
+</script>
+
+</body>
+</html>

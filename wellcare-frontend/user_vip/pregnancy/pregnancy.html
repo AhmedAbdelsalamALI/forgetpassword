@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة الحمل وموعد الولادة</title>
+    <link rel="stylesheet" href="./pregnancy.css">
+    <link rel="stylesheet" href="./pregnancy.js">
+    <script src="./pregnancy.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body style="background-color: #d42d7b;">
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-baby"></i> حاسبة الحمل وموعد الولادة</h1>
+            <p>أداة طبية دقيقة لحساب موعد الولادة المتوقع وتتبع مراحل الحمل</p>
+        </header>
+
+        <main>
+            <div class="calculator-section">
+                <h2><i class="fas fa-calculator"></i> حاسبة موعد الولادة</h2>
+                <div class="input-group">
+                    <label for="lmp">تاريخ أول يوم من آخر دورة شهرية:</label>
+                    <input type="date" id="lmp" required>
+                </div>
+                <div class="input-group">
+                    <label for="cycle-length">مدة الدورة الشهرية (بالأيام):</label>
+                    <select id="cycle-length">
+                        <option value="28">28 يوم (المعدل الطبيعي)</option>
+                        <option value="21">21 يوم</option>
+                        <option value="22">22 يوم</option>
+                        <option value="23">23 يوم</option>
+                        <option value="24">24 يوم</option>
+                        <option value="25">25 يوم</option>
+                        <option value="26">26 يوم</option>
+                        <option value="27">27 يوم</option>
+                        <option value="29">29 يوم</option>
+                        <option value="30">30 يوم</option>
+                        <option value="31">31 يوم</option>
+                        <option value="32">32 يوم</option>
+                        <option value="33">33 يوم</option>
+                        <option value="34">34 يوم</option>
+                        <option value="35">35 يوم</option>
+                    </select>
+                </div>
+                <button id="calculate-btn">حساب موعد الولادة</button>
+                
+                <div id="results" class="hidden">
+                    <div class="result-box">
+                        <h3>نتائج الحساب</h3>
+                        <p><strong>تاريخ آخر دورة شهرية:</strong> <span id="lmp-result"></span></p>
+                        <p><strong>موعد الولادة المتوقع:</strong> <span id="edd-result" class="highlight"></span></p>
+                        <p><strong>عمر الحمل الحالي:</strong> <span id="current-pregnancy-age"></span></p>
+                        <p><strong>مرحلة الحمل:</strong> <span id="pregnancy-stage"></span></p>
+                        <p><strong>الأسبوع الحالي من الحمل:</strong> <span id="current-week"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pregnancy-timeline">
+                <h2><i class="fas fa-calendar-alt"></i> خطوة الحمل بالأسبوع</h2>
+                <div class="timeline-container">
+                    <div class="timeline-nav">
+                        <button class="timeline-nav-btn active" data-week="all">كل المراحل</button>
+                        <button class="timeline-nav-btn" data-week="1-12">الثلث الأول (1-12)</button>
+                        <button class="timeline-nav-btn" data-week="13-26">الثلث الثاني (13-26)</button>
+                        <button class="timeline-nav-btn" data-week="27-40">الثلث الثالث (27-40)</button>
+                    </div>
+                    <div class="timeline-weeks" id="timeline-weeks">
+                        <!-- سيتم ملؤه بواسطة JavaScript -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="pregnancy-info">
+                <h2><i class="fas fa-info-circle"></i> معلومات عن مراحل الحمل</h2>
+                <div class="info-tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" data-tab="trimester1">الثلث الأول</button>
+                        <button class="tab-btn" data-tab="trimester2">الثلث الثاني</button>
+                        <button class="tab-btn" data-tab="trimester3">الثلث الثالث</button>
+                        <button class="tab-btn" data-tab="tips">نصائح عامة</button>
+                    </div>
+                    <div class="tab-content active" id="trimester1">
+                        <h3>الثلث الأول (الأسابيع 1-12)</h3>
+                        <p>في هذه المرحلة تحدث التغيرات التالية:</p>
+                        <ul>
+                            <li>تكوين الأعضاء الأساسية للجنين</li>
+                            <li>بداية نبض القلب (حوالي الأسبوع 6)</li>
+                            <li>تطور الأنبوب العصبي الذي يصبح الدماغ والحبل الشوكي</li>
+                            <li>ظهور براعم الأطراف (الأيدي والأقدام)</li>
+                            <li>الأعراض الشائعة للأم: الغثيان، التعب، تكرار التبول</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="trimester2">
+                        <h3>الثلث الثاني (الأسابيع 13-26)</h3>
+                        <p>في هذه المرحلة تحدث التغيرات التالية:</p>
+                        <ul>
+                            <li>تطور الأعضاء ووضوح الجنس</li>
+                            <li>ظهور الشعر والأظافر</li>
+                            <li>بداية حركات الجنين التي يمكن الشعور بها</li>
+                            <li>تطور حاسة السمع</li>
+                            <li>الأعراض الشائعة للأم: زيادة الطاقة، ظهور بطن الحمل، حرقة المعدة</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="trimester3">
+                        <h3>الثلث الثالث (الأسابيع 27-40)</h3>
+                        <p>في هذه المرحلة تحدث التغيرات التالية:</p>
+                        <ul>
+                            <li>اكتساب الوزن السريع للجنين</li>
+                            <li>اكتمال نمو الرئتين</li>
+                            <li>تحديد وضعية الولادة (رأسًا أو قدمًا)</li>
+                            <li>تطور ردود الفعل مثل المص والبلع</li>
+                            <li>الأعراض الشائعة للأم: صعوبة النوم، تورم القدمين، تقلصات براكستون هيكس</li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="tips">
+                        <h3>نصائح عامة للحمل الصحي</h3>
+                        <ul>
+                            <li>تناول الفيتامينات والمكملات الغذائية الموصى بها من الطبيب</li>
+                            <li>الحرص على التغذية المتوازنة والبروتين</li>
+                            <li>ممارسة الرياضة المناسبة للحمل مثل المشي واليوجا</li>
+                            <li>الابتعاد عن التدخين والكحول</li>
+                            <li>الحد من الكافيين</li>
+                            <li>الراحة الكافية والنوم الجيد</li>
+                            <li>المتابعة المنتظمة مع الطبيب</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>هذه الأداة تقدم تقديرات عامة ولا تغني عن استشارة الطبيب المختص</p>
+            <p>© 2025  -WELLCARE جميع الحقوق محفوظة</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

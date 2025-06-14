@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تطبيق الإقلاع عن التدخين - رحلة نحو الصحة</title>
+    <link rel="stylesheet" href="./style.css">
+    <script src="./js.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="app-container">
+        <!-- شريط التقدم -->
+        <header class="progress-bar">
+            <div class="progress-info">
+                <h1><i class="fas fa-smoking-ban"></i> رحلتك للإقلاع عن التدخين</h1>
+                <div class="stats-container">
+                    <div class="stat-box">
+                        <span class="stat-value" id="days-clean">0</span>
+                        <span class="stat-label">أيام بدون تدخين</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-value" id="cigarettes-saved">0</span>
+                        <span class="stat-label">سجائر وفرتها</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-value" id="money-saved">0</span>
+                        <span class="stat-label">توفير مالي</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- القسم الرئيسي -->
+        <main class="main-content">
+            <!-- شريط التنقل -->
+            <nav class="nav-tabs">
+                <button class="nav-btn active" data-tab="progress"><i class="fas fa-chart-line"></i> تقدمي</button>
+                <button class="nav-btn" data-tab="health"><i class="fas fa-heartbeat"></i> صحتي</button>
+                <button class="nav-btn" data-tab="tips"><i class="fas fa-lightbulb"></i> نصائح</button>
+                <button class="nav-btn" data-tab="community"><i class="fas fa-users"></i> مجتمع</button>
+            </nav>
+
+            <!-- محتوى التبويبات -->
+            <div class="tab-content active" id="progress-tab">
+                <div class="motivational-message">
+                    <p id="motivation-text">أنت على الطريق الصحيح! استمر في التقدم.</p>
+                </div>
+
+                <div class="health-milestones">
+                    <h2><i class="fas fa-medal"></i> إنجازاتك الصحية</h2>
+                    <div class="milestones-container">
+                        <div class="milestone achieved">
+                            <i class="fas fa-check-circle"></i>
+                            <p>20 دقيقة: انخفاض ضغط الدم</p>
+                        </div>
+                        <div class="milestone">
+                            <i class="far fa-clock"></i>
+                            <p>8 ساعات: زيادة الأكسجين في الدم</p>
+                        </div>
+                        <div class="milestone">
+                            <i class="far fa-clock"></i>
+                            <p>24 ساعة: تقليل خطر النوبة القلبية</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="craving-management">
+                    <h2><i class="fas fa-fire"></i> إدارة الرغبة في التدخين</h2>
+                    <button class="craving-btn" id="craving-now">أشعر برغبة الآن!</button>
+                    <div class="distraction-tips hidden" id="distraction-tips">
+                        <h3>جرب هذه الأنشطة:</h3>
+                        <ul>
+                            <li>اشرب كوبًا من الماء البارد</li>
+                            <li>قم بتمارين التنفس العميق</li>
+                            <li>اخرج لنزهة قصيرة</li>
+                            <li>امضغ علكة خالية من السكر</li>
+                        </ul>
+                        <div class="countdown-timer">
+                            <p>الرغبة ستمر خلال: <span id="craving-timer">05:00</span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="health-tab">
+                <div class="health-stats">
+                    <h2><i class="fas fa-chart-bar"></i> تقدمك الصحي</h2>
+                    <div class="health-grid">
+                        <div class="health-card">
+                            <div class="health-progress" id="lung-capacity">
+                                <div class="progress-circle" data-progress="0">
+                                    <span>0%</span>
+                                </div>
+                                <p>سعة الرئة</p>
+                            </div>
+                        </div>
+                        <div class="health-card">
+                            <div class="health-progress" id="heart-health">
+                                <div class="progress-circle" data-progress="0">
+                                    <span>0%</span>
+                                </div>
+                                <p>صحة القلب</p>
+                            </div>
+                        </div>
+                        <div class="health-card">
+                            <div class="health-progress" id="energy-level">
+                                <div class="progress-circle" data-progress="0">
+                                    <span>0%</span>
+                                </div>
+                                <p>مستوى الطاقة</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="timeline-container">
+                        <h3>تحسن صحتك مع الوقت:</h3>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">بعد 20 دقيقة</div>
+                                <div class="timeline-content">ضغط الدم ومعدل النبض يعودان إلى المستوى الطبيعي</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">بعد 8 ساعات</div>
+                                <div class="timeline-content">مستوى أول أكسيد الكربون في الدم ينخفض</div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">بعد 24 ساعة</div>
+                                <div class="timeline-content">خطر النوبة القلبية يبدأ في الانخفاض</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="tips-tab">
+                <div class="tips-container">
+                    <h2><i class="fas fa-book-open"></i> نصائح يومية</h2>
+                    <div class="daily-tip">
+                        <h3>نصحة اليوم</h3>
+                        <p id="daily-tip-text">اشرب الكثير من الماء لمساعدة جسمك على التخلص من السموم.</p>
+                    </div>
+
+                    <div class="tip-categories">
+                        <div class="category-card">
+                            <i class="fas fa-utensils"></i>
+                            <h3>نصائح غذائية</h3>
+                            <ul>
+                                <li>تناول الخضروات والفواكه الطازجة</li>
+                                <li>اختر الأطعمة الغنية بفيتامين C</li>
+                                <li>تجنب الكافيين الزائد</li>
+                            </ul>
+                        </div>
+                        <div class="category-card">
+                            <i class="fas fa-running"></i>
+                            <h3>نشاط بدني</h3>
+                            <ul>
+                                <li>مارس المشي يومياً</li>
+                                <li>جرب تمارين اليوجا</li>
+                                <li>استخدم تمارين التنفس</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="community-tab">
+                <div class="community-container">
+                    <h2><i class="fas fa-users"></i> مجتمع الدعم</h2>
+                    <div class="community-stats">
+                        <div class="community-stat">
+                            <span class="stat-number">1,245</span>
+                            <span class="stat-label">أشخاص أقلعوا اليوم</span>
+                        </div>
+                        <div class="community-stat">
+                            <span class="stat-number">3,784</span>
+                            <span class="stat-label">يوم بدون تدخين</span>
+                        </div>
+                    </div>
+
+                    <div class="success-stories">
+                        <h3>قصص نجاح</h3>
+                        <div class="story-card">
+                            <p>"بعد 30 سنة من التدخين، تمكنت من الإقلاع بمساعدة هذا التطبيق. الآن أشعر أني ولدت من جديد!"</p>
+                            <span>- أحمد، 54 سنة</span>
+                        </div>
+                        <div class="story-card">
+                            <p>"التطبيق ساعدني في تخطي أصعب الفترات. النصائح اليومية كانت منقذة!"</p>
+                            <span>- سارة، 32 سنة</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- شريط الإدخال -->
+        <footer class="input-section">
+            <div class="add-cigarette">
+                <h3><i class="fas fa-plus-circle"></i> سجل سيجارة دخنتها</h3>
+                <p>في حالة الانتكاس، سجل هنا لضمان متابعة دقيقة</p>
+                <button class="add-btn" id="add-cigarette-btn">+ سجل سيجارة</button>
+            </div>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أداة مقارنة الأدوية</title>
+    <link rel="stylesheet" href="med.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-pills"></i> أداة مقارنة الأدوية</h1>
+            <p>قارن بين دوائين للحصول على معلومات شاملة تساعدك في اتخاذ القرار</p>
+        </header>
+        
+        <main>
+            <form id="drugComparisonForm">
+                <div class="input-group">
+                    <label for="drug1"><i class="fas fa-capsules"></i> الدواء الأول:</label>
+                    <input type="text" id="drug1" name="drug1" placeholder="أدخل اسم الدواء الأول" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="drug2"><i class="fas fa-capsules"></i> الدواء الثاني:</label>
+                    <input type="text" id="drug2" name="drug2" placeholder="أدخل اسم الدواء الثاني" required>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="includePrice" name="includePrice">
+                    <label for="includePrice">مقارنة الأسعار (اختياري)</label>
+                </div>
+                
+                <button type="submit" class="compare-btn">
+                    <i class="fas fa-exchange-alt"></i> مقارنة الأدوية
+                </button>
+            </form>
+            
+            <div id="loading" class="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>جاري البحث والمقارنة...</p>
+            </div>
+            
+            <div id="comparisonResult" class="comparison-result" style="display: none;">
+                <h2><i class="fas fa-clipboard-list"></i> نتائج المقارنة</h2>
+                
+                <div class="drugs-names">
+                    <h3 id="drug1Name"></h3>
+                    <h3 id="drug2Name"></h3>
+                </div>
+                
+                <div class="comparison-table">
+                    <div class="comparison-row header">
+                        <div class="comparison-category">الفئة</div>
+                        <div class="drug1-data">الدواء الأول</div>
+                        <div class="drug2-data">الدواء الثاني</div>
+                    </div>
+                    
+                    <div class="comparison-row">
+                        <div class="comparison-category"><i class="fas fa-flask"></i> المادة الفعالة</div>
+                        <div class="drug1-data" id="drug1ActiveIngredient"></div>
+                        <div class="drug2-data" id="drug2ActiveIngredient"></div>
+                    </div>
+                    
+                    <div class="comparison-row">
+                        <div class="comparison-category"><i class="fas fa-bullseye"></i> الاستخدامات</div>
+                        <div class="drug1-data" id="drug1Uses"></div>
+                        <div class="drug2-data" id="drug2Uses"></div>
+                    </div>
+                    
+                    <div class="comparison-row">
+                        <div class="comparison-category"><i class="fas fa-ban"></i> موانع الاستعمال</div>
+                        <div class="drug1-data" id="drug1Contraindications"></div>
+                        <div class="drug2-data" id="drug2Contraindications"></div>
+                    </div>
+                    
+                    <div class="comparison-row">
+                        <div class="comparison-category"><i class="fas fa-exclamation-triangle"></i> الأعراض الجانبية</div>
+                        <div class="drug1-data" id="drug1SideEffects"></div>
+                        <div class="drug2-data" id="drug2SideEffects"></div>
+                    </div>
+                    
+                    <div class="comparison-row">
+                        <div class="comparison-category"><i class="fas fa-pills"></i> التفاعل مع أدوية أخرى</div>
+                        <div class="drug1-data" id="drug1Interactions"></div>
+                        <div class="drug2-data" id="drug2Interactions"></div>
+                    </div>
+                    
+                    <div class="comparison-row" id="priceRow" style="display: none;">
+                        <div class="comparison-category"><i class="fas fa-tag"></i> السعر</div>
+                        <div class="drug1-data" id="drug1Price"></div>
+                        <div class="drug2-data" id="drug2Price"></div>
+                    </div>
+                </div>
+                
+                <button class="new-comparison-btn" onclick="resetForm()">
+                    <i class="fas fa-redo"></i> مقارنة جديدة
+                </button>
+            </div>
+            
+            <div id="errorMessage" class="error-message" style="display: none;">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>حدث خطأ أثناء جلب البيانات. يرجى المحاولة مرة أخرى.</p>
+            </div>
+        </main>
+        
+        <footer>
+            <p>© 2025 أداة مقارنة الأدوية | جميع الحقوق محفوظة</p>
+            <p class="disclaimer">
+                تنبيه: هذه الأداة تقدم معلومات عامة فقط ولا تغني عن استشارة الطبيب أو الصيدلي.
+            </p>
+        </footer>
+    </div>
+    
+    <script src="med.js"></script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خريطة الصيدليات والمستشفيات</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #eaf7fd;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+            padding: 15px;
+            margin: 0;
+            background-color: #d4edfc;
+            border-bottom: 2px solid #b3e0ff;
+        }
+        #map {
+            height: 75vh;
+            width: 95%;
+            margin: 15px auto;
+            border: 2px solid #6bb9f0;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(52, 152, 219, 0.3);
+        }
+        .controls {
+            text-align: center;
+            padding: 10px;
+            margin: 10px auto;
+            width: 95%;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 0 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .legend {
+            background: rgba(255,255,255,0.9);
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <h1><i class="fas fa-map-marked-alt"></i> خريطة الصيدليات والمستشفيات</h1>
+    
+    <div class="controls">
+        <button onclick="showPharmacies()"><i class="fas fa-pills"></i> عرض الصيدليات</button>
+        <button onclick="showHospitals()"><i class="fas fa-hospital"></i> عرض المستشفيات</button>
+        <button onclick="showBoth()"><i class="fas fa-clinic-medical"></i> عرض الكل</button>
+        <button onclick="clearMap()"><i class="fas fa-trash-alt"></i> مسح الخريطة</button>
+    </div>
+    
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // إحداثيات مركز الفيوم
+        const mapCenter = [29.3085, 30.8428];
+        
+        // تهيئة الخريطة
+        var map = L.map('map').setView(mapCenter, 12);
+        
+        // إضافة طبقة الخريطة
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // أيقونات مخصصة
+        var pharmacyIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/3075/3075977.png',
+            iconSize: [28, 28],
+            iconAnchor: [14, 28]
+        });
+
+        var hospitalIcon = L.icon({
+            iconUrl: 'https://cdn-icons-png.flaticon.com/512/2965/2965300.png',
+            iconSize: [32, 32],
+            iconAnchor: [16, 32]
+        });
+
+        // بيانات الصيدليات في الفيوم
+        var pharmacies = [
+            {name: "صيدلية النور", lat: 29.3123, lng: 30.8441},
+            {name: "صيدلية الشفاء", lat: 29.3067, lng: 30.8389},
+            {name: "صيدلية المدينة", lat: 29.3105, lng: 30.8476},
+            {name: "صيدلية السلام", lat: 29.3148, lng: 30.8412},
+            {name: "صيدلية الأمل", lat: 29.3052, lng: 30.8353}
+        ];
+
+        // بيانات المستشفيات في الفيوم
+        var hospitals = [
+            {name: "المستشفى العام", lat: 29.3102, lng: 30.8408},
+            {name: "مستشفى الصدر", lat: 29.3089, lng: 30.8367},
+            {name: "مستشفى الجامعة", lat: 29.3021, lng: 30.8324}
+        ];
+
+        var markers = [];
+
+        // عرض الصيدليات
+        function showPharmacies() {
+            clearMap();
+            pharmacies.forEach(pharma => {
+                var marker = L.marker([pharma.lat, pharma.lng], {icon: pharmacyIcon})
+                    .addTo(map)
+                    .bindPopup("<b>" + pharma.name + "</b>");
+                markers.push(marker);
+            });
+            zoomToMarkers();
+        }
+
+        // عرض المستشفيات
+        function showHospitals() {
+            clearMap();
+            hospitals.forEach(hospital => {
+                var marker = L.marker([hospital.lat, hospital.lng], {icon: hospitalIcon})
+                    .addTo(map)
+                    .bindPopup("<b>" + hospital.name + "</b>");
+                markers.push(marker);
+            });
+            zoomToMarkers();
+        }
+
+        // عرض الكل
+        function showBoth() {
+            clearMap();
+            showPharmacies();
+            showHospitals();
+        }
+
+        // مسح الخريطة
+        function clearMap() {
+            markers.forEach(marker => map.removeLayer(marker));
+            markers = [];
+        }
+
+        // تكبير/تصغير الخريطة
+        function zoomToMarkers() {
+            if (markers.length > 0) {
+                var group = new L.featureGroup(markers);
+                map.fitBounds(group.getBounds().pad(0.1));
+            } else {
+                map.setView(mapCenter, 12);
+            }
+        }
+
+        // إضافة وسيلة إيضاح
+        var legend = L.control({position: 'bottomright'});
+        legend.onAdd = function(map) {
+            var div = L.DomUtil.create('div', 'legend');
+            div.innerHTML = `
+                <div><img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" width="16"> صيدلية</div>
+                <div><img src="https://cdn-icons-png.flaticon.com/512/2965/2965300.png" width="16"> مستشفى</div>
+            `;
+            return div;
+        };
+        legend.addTo(map);
+    </script>
+</body>
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> نظام إدارة المواعيد المواعيد الطبية</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="header" style="background-color: #288fe2;">
+  <h1> حجز المواعيد الطبية</h1>
+  <a href="../wellcare-frontend/index.html"><button class="main-menu-btn">القائمة الرئيسية</button></a>
+  <div id="userInfo">
+  </div>
+</div>
+
+<div class="container">
+  <div class="tabs">
+    <div class="tab active" onclick="showTab('newAppointment')">إضافة ميعاد جديد</div>
+    <div class="tab" onclick="showTab('pendingRequests')">طلبات الحجز</div>
+    <div class="tab" onclick="showTab('acceptedRequests')">الجلسات المؤكدة</div>
+  </div>
+
+  <div id="newAppointment" class="tab-content active">
+    <h2 class="page-title">إضافة ميعاد جديد</h2>
+    
+    <div class="appointment-form">
+      <div class="form-row">
+        <div class="form-group">
+          <label for="doctorName">اسم الطبيب</label>
+          <input type="text" id="doctorName" placeholder="أدخل اسم الطبيب" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="doctorSpecialty">التخصص</label>
+          <input type="text" id="doctorSpecialty" placeholder="أدخل التخصص الطبي" required>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="appointmentDate">تاريخ الميعاد</label>
+          <input type="date" id="appointmentDate" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="appointmentTime">وقت الميعاد</label>
+          <input type="time" id="appointmentTime" required>
+        </div>
+      </div>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="appointmentDuration">مدة الجلسة (بالدقائق)</label>
+          <select id="appointmentDuration" required>
+            <option value="15">15 دقيقة</option>
+            <option value="30" selected>30 دقيقة</option>
+            <option value="45">45 دقيقة</option>
+            <option value="60">60 دقيقة</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="meetingLink">رابط الاجتماع</label>
+          <input type="url" id="meetingLink" placeholder="أدخل رابط الاجتماع" required>
+        </div>
+      </div>
+      
+      <button onclick="addAppointment()">إضافة الميعاد</button>
+    </div>
+  </div>
+
+  <div id="pendingRequests" class="tab-content">
+    <h2 class="page-title">طلبات الحجز</h2>
+    <button onclick="loadPendingRequests()" class="refresh-btn" style="margin-bottom: 20px;">تحديث القائمة 🔄</button>
+    <div id="pendingRequestsList"></div>
+  </div>
+
+  <div id="acceptedRequests" class="tab-content">
+    <h2 class="page-title">الجلسات المؤكدة</h2>
+    <button onclick="loadAcceptedRequests()" class="refresh-btn" style="margin-bottom: 20px;">تحديث القائمة 🔄</button>
+    <div id="acceptedRequestsList"></div>
+  </div>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script>
+  function showTab(tabId) {
+    // إخفاء كل المحتويات
+    const contents = document.querySelectorAll('.tab-content');
+    contents.forEach(content => content.classList.remove('active'));
+    
+    // إلغاء تنشيط كل التبويبات
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(tab => tab.classList.remove('active'));
+    
+    // تنشيط التبويب والمحتوى المطلوب
+    document.getElementById(tabId).classList.add('active');
+    event.currentTarget.classList.add('active');
+    
+    // تحميل البيانات المناسبة
+    if (tabId === 'pendingRequests') {
+      loadPendingRequests();
+    } else if (tabId === 'acceptedRequests') {
+      loadAcceptedRequests();
+    }
+  }
+  
+  // تهيئة الصفحة عند التحميل
+  document.addEventListener('DOMContentLoaded', function() {
+    // تهيئة التخزين المحلي
+    setupStorage();
+  });
+
+    window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tab = urlParams.get('tab');
+
+    if (tab === 'requests') {
+      // شغّل تاب "طلبات الحجز"
+      document.querySelector('[data-tab="booking-requests"]').click();
+    } else if (tab === 'confirmed') {
+      document.querySelector('[data-tab="confirmed-sessions"]').click();
+    } else if (tab === 'new') {
+      document.querySelector('[data-tab="new-slot"]').click();
+    }
+  });
+  
+</script>
+
+</body>
+</html>
